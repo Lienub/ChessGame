@@ -1,8 +1,0 @@
-@startuml
-
-abstract class Piece {
-    
-}
-
-
-@enduml

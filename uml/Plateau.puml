@@ -1,0 +1,16 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+class Plateau{
+    - board : Integer[][]
+-    + whitePiecesList : Piece[]
+    + blackPiecesList : Piece[]
+
+    + getBoard() : Integer[][]
+    + getWhitePL() : Piece[]
+    + getBlackPL() : Piece[]
+
+}
+
+@enduml

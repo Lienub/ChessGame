@@ -1,0 +1,23 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+abstract class Piece {
+    - private Integer color
+    - private Position position
+    - private Boolean isMovable
+    - private Boolean isCapturable
+
+    + getColor() : Integer
+    + getPosition() : Position
+    + getIsMovable() : Boolean
+    + getIsCaptured() : Boolean
+
+    + setColor(color : Integer) : void
+    + setPosition(position : Position) : void
+    + setIsMovable(isMovable : Boolean) : void
+    + setIsCaptured(isCaptured : Boolean) : void
+
+}
+
+@enduml

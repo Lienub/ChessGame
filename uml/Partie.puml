@@ -1,0 +1,11 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+class Partie {
+    + player1 : String
+    + player2 : String
+    - gameEnded : Boolean
+}
+
+@enduml

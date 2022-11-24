@@ -1,0 +1,17 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+class Joueur {
+    - playerName : String
+    - playerColor : Integer
+
+    + getName() : String
+    + getColor() : Integer
+    
+    + setName() : void
+    + setColor() : void
+    
+}
+
+@enduml
