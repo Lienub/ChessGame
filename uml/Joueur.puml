@@ -5,12 +5,16 @@ skinparam classBackgroundColor #FFFFFD
 class Joueur {
     - playerName : String
     - playerColor : Integer
+    - listPieces : List<Piece>
 
+    + Joueur(playerName : String, playerColor : Integer)
     + getName() : String
     + getColor() : Integer
+    + getPieces() : List<Pieces>
     
     + setName() : void
     + setColor() : void
+    + removePiece(piece : Piece)
     
 }
 

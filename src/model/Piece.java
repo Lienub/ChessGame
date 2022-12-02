@@ -42,7 +42,6 @@ public abstract class Piece {
         this.isMovable = isMovable;
     }
 
-
     public void setIsCaptured(Boolean isCaptured) {
         this.isCaptured = isCaptured;
     }

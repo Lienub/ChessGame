@@ -3,13 +3,16 @@ skinparam classBorderColor #4F4F4F
 skinparam classBackgroundColor #FFFFFD
 
 class Plateau{
-    - board : Integer[][]
--    + whitePiecesList : Piece[]
+    - board : Piece[][]
+    + whitePiecesList : Piece[]
     + blackPiecesList : Piece[]
+    
 
-    + getBoard() : Integer[][]
+    + Plateau()
+    + getBoard() : Piece[][]
     + getWhitePL() : Piece[]
     + getBlackPL() : Piece[]
+    + upgradePiece(pos : Position, piece : Piece) : Piece
 
 }
 

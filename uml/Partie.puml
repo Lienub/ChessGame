@@ -3,9 +3,13 @@ skinparam classBorderColor #4F4F4F
 skinparam classBackgroundColor #FFFFFD
 
 class Partie {
-    + player1 : String
-    + player2 : String
+    + player1 : Joueur
+    + player2 : Joueur
+    - gagnant : Joueur
+    - nombreTours : Integer
     - gameEnded : Boolean
+    
+    + Partie()
 }
 
 @enduml

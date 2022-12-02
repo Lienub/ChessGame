@@ -1,7 +1,12 @@
 package model;
 
-public class Roi extends Piece {
+public class King extends Piece {
     private Boolean isCapturable;
+
+    public King(Integer color, Position position) {
+        super(color, position);
+    }
+
 
     public Boolean getIsCapturable() {
         return this.isCapturable;

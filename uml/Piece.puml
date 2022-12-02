@@ -8,6 +8,7 @@ abstract class Piece {
     - private Boolean isMovable
     - private Boolean isCapturable
 
+    + Piece(color : Integer, position : Position)
     + getColor() : Integer
     + getPosition() : Position
     + getIsMovable() : Boolean
@@ -19,5 +20,6 @@ abstract class Piece {
     + setIsCaptured(isCaptured : Boolean) : void
 
 }
+
 
 @enduml

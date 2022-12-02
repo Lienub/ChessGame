@@ -1,10 +1,10 @@
 package model;
 
-public class Pion extends Piece {
+public class Pawn extends Piece {
     private Boolean isPromoted;
     private Boolean isPromotable;
 
-    public Pion(Integer color, Position position) {
+    public Pawn(Integer color, Position position) {
         super(color, position);
         setIsPromoted(false);
         setIsPromotable(false);

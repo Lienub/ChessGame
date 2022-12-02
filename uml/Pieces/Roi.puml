@@ -3,7 +3,11 @@ skinparam classBorderColor #4F4F4F
 skinparam classBackgroundColor #FFFFFD
 
 class Roi extends Piece{
+    - isUndefendable : boolean
 
+    + getIsCapturable() : boolean
+    
+    + setIsCapturable() : void
 }
 
 @enduml
