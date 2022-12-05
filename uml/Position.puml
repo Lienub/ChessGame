@@ -1,0 +1,17 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+class Position{
+    - xPos : int
+    - yPos : int
+
+    + Position(x : int, y : int)
+    + setPos(x : int, y : int) : void
+    + equals(p : Position) : Boolean
+    + getX() : Integer
+    + getY() : Integer
+
+}
+
+@enduml

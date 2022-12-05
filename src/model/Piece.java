@@ -2,9 +2,10 @@ package model;
 
 public abstract class Piece {
     private Integer color;
-    private Position position;
-    private Boolean isMovable;
-    private Boolean isCaptured;
+    protected Position position;
+    protected Boolean isMovable;
+    protected Boolean isCaptured;
+    protected Boolean firstMove;
 
     public Piece(Integer color, Position position) {
         this.color = color;
@@ -30,6 +31,16 @@ public abstract class Piece {
         return null;
     }
 
+    public Boolean move(Position coord)
+    {
+        if(getIsMovable()) {
+            setPosition(coord);
+            firstMove = false;
+            return true;
+        }
+        return false;
+    }
+    
     public void setColor(Integer color) {
         this.color = color;
     }
@@ -38,8 +49,8 @@ public abstract class Piece {
         this.position = position;
     }
 
-    public void setIsMovable(Boolean isMovable) {
-        this.isMovable = isMovable;
+    public void setIsMovable(Piece[][] plateau, Position coord) {
+        this.isMovable = true;
     }
 
     public void setIsCaptured(Boolean isCaptured) {

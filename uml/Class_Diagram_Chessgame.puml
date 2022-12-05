@@ -1,0 +1,107 @@
+@startuml
+/'=================================
+  ===          MODEL           ===
+  ================================='/
+package model #8df2a8{
+    abstract class Piece {
+        - private Integer color
+        - private Position position
+        - private Boolean isMovable
+        - private Boolean isCapturable
+        - private Boolean firstMove
+
+        + Piece(color : Integer, position : Position)
+        + getColor() : Integer
+        + getPosition() : Position
+        + getIsMovable() : Boolean
+        + getIsCaptured() : Boolean
+
+        + move(coord : Position) : Boolean
+
+        + setColor(color : Integer) : void
+        + setPosition(position : Position) : void
+        + setIsMovable(plateau : Piece[][], coord : Position) : void
+        + setIsCaptured(isCaptured : Boolean) : void
+
+    }
+
+    class Position{
+        - xPos : int
+        - yPos : int
+
+        + Position(x : int, y : int)
+        + setPos(x : int, y : int) : void
+        + equals(p : Position) : Boolean
+        + getX() : Integer
+        + getY() : Integer
+    }
+
+    class Queen extends Piece{
+
+    }
+
+    class Rook extends Piece{
+
+    }
+
+    class Pawn extends Piece{
+        - Boolean isPromoted
+        - Boolean isPromotable
+    }
+
+    class King extends Piece{
+        - isUndefendable : boolean
+
+        + getIsCapturable() : boolean
+
+        + setIsCapturable() : void
+    }
+
+    class Bishop extends Piece{
+
+    }
+
+    class Knight extends Piece{
+
+    }
+}
+/'=================================
+  ===        CONTROLLER         ===
+  ================================='/
+package controller #f28d97{
+    class MainGame{
+    }
+}
+/'=================================
+  ===           VIEW            ===
+  ================================='/
+package view #f2d48d{
+    class Player {
+        - playerName : String
+        - playerColor : Integer
+        - listPiece : List<Piece>
+        - deadPiece : List<Piece>
+
+        + Joueur(playerName : String, playerColor : Integer)
+
+        + getName() : String
+        + getColor() : Integer
+        + getAllPiece() : List<Piece>
+        + getDeadPiece() : List<Piece>
+
+        + initPiece() : void
+        + removePiece(coord : Position)
+    }
+
+    class GameViewer {
+        - instance : GameViewer
+
+        + GameViewer() : GameViewer
+    }
+}
+/'=================================
+  ===          LINKS            ===
+  ================================='/
+Piece - Position : use >
+
+@enduml
