@@ -46,7 +46,8 @@ public class GameViewer extends JFrame {
                     b.setBackground(Color.WHITE);
                 else
                     b.setBackground(Color.BLACK);
-              squares[j][i] = b;
+                b.setOpaque(true);
+                squares[j][i] = b;
             }
         }                      
     }

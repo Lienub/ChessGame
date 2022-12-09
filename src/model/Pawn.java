@@ -3,7 +3,7 @@ package model;
 public class Pawn extends Piece {
     private Boolean isPromoted;
     private Boolean isPromotable;
-
+    private Boolean firstMove;
 
     public Pawn(Integer color, Position position) {
         super(color, position);
@@ -30,57 +30,84 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void setIsMovable(Piece[][] plateau, Position coord){
+    public void setMove(Piece[][] plateau, Position coord){
         //White Pawn
         if(this.getColor() == 0){
             if(this.firstMove){
-                if(getPosition().getX() == coord.getX() && getPosition().getY()-2 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX() == coord.getX() && getPosition().getY()-1 ==coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
+                if(plateau[this.position.getX()][this.position.getY() + 1] == null && plateau[this.position.getX()][this.position.getY() + 2] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 2));
+                }
+
+                if(plateau[this.position.getX()][this.position.getY() + 1] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 1));
+                }
+
+                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() + 1] != null && plateau[this.position.getX() + 1][this.position.getY() + 1].getColor() == 1){
+                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() + 1));
+                }
+
+                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() + 1] != null && plateau[this.position.getX() - 1][this.position.getY() + 1].getColor() == 1){
+                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() + 1));
+                }
+
+                this.firstMove = false;
             }
             else {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
+                if(plateau[this.position.getX()][this.position.getY() + 1] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 1));
+                }
+
+                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() + 1] != null && plateau[this.position.getX() + 1][this.position.getY() + 1].getColor() == 1){
+                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() + 1));
+                }
+
+                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() + 1] != null && plateau[this.position.getX() - 1][this.position.getY() + 1].getColor() == 1){
+                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() + 1));
+                }
+
+                if(this.position.getY() == 1 && plateau[this.position.getX()][this.position.getY() + 2] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 2));
+                }
             }
         }
         else if(this.getColor() == 1)
         {
             if(this.firstMove)
             {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()+2 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX() == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
+                if(plateau[this.position.getX()][this.position.getY() - 1] == null && plateau[this.position.getX()][this.position.getY() - 2] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 2));
+                }
+
+                if(plateau[this.position.getX()][this.position.getY() - 1] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 1));
+                }
+
+                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() - 1] != null && plateau[this.position.getX() + 1][this.position.getY() - 1].getColor() == 0){
+                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() - 1));
+                }
+
+                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() - 1] != null && plateau[this.position.getX() - 1][this.position.getY() - 1].getColor() == 0){
+                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() - 1));
+                }
+
+                this.firstMove = false;
             }
-            else
-            {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
+            else {
+                if(plateau[this.position.getX()][this.position.getY() - 1] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 1));
+                }
+
+                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() - 1] != null && plateau[this.position.getX() + 1][this.position.getY() - 1].getColor() == 0){
+                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() - 1));
+                }
+
+                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() - 1] != null && plateau[this.position.getX() - 1][this.position.getY() - 1].getColor() == 0){
+                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() - 1));
+                }
+
+                if(this.position.getY() == 6 && plateau[this.position.getX()][this.position.getY() - 2] == null){
+                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 2));
+                }
             }
         }
     }

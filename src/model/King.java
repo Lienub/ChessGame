@@ -1,18 +1,18 @@
 package model;
 
 public class King extends Piece {
-    private Boolean isCapturable;
+    private Boolean isUndefendable;
 
     public King(Integer color, Position position) {
         super(color, position);
     }
 
 
-    public Boolean getIsCapturable() {
-        return this.isCapturable;
+    public Boolean getIsUndefendable() {
+        return this.isUndefendable;
     }
 
-    public void setIsCapturable(Boolean isCapturable) {
-        this.isCapturable = isCapturable;
+    public void setIsUndefendable (Boolean isUndefendable) {
+        this.isUndefendable = isUndefendable;
     }
 }

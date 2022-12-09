@@ -1,26 +1,31 @@
 @startuml
 /'=================================
-  ===          MODEL           ===
+  ===          IMPORT           ===
+  ================================='/
+  package java.util.List{}
+  package java.util.ArrayList{}
+/'=================================
+  ===          MODEL            ===
   ================================='/
 package model #8df2a8{
     abstract class Piece {
-        - private Integer color
-        - private Position position
-        - private Boolean isMovable
-        - private Boolean isCapturable
-        - private Boolean firstMove
+        - Integer color
+        # Position position
+        # Boolean isCapturable
+        # List<Position> possibleMoves
 
         + Piece(color : Integer, position : Position)
+
         + getColor() : Integer
         + getPosition() : Position
-        + getIsMovable() : Boolean
         + getIsCaptured() : Boolean
+        + getPossibleMoves() : List<Position>
 
         + move(coord : Position) : Boolean
 
         + setColor(color : Integer) : void
         + setPosition(position : Position) : void
-        + setIsMovable(plateau : Piece[][], coord : Position) : void
+        + setMove(plateau : Piece[][], coord : Position) : void
         + setIsCaptured(isCaptured : Boolean) : void
 
     }
@@ -36,33 +41,54 @@ package model #8df2a8{
         + getY() : Integer
     }
 
-    class Queen extends Piece{
+    class Queen{
+        + Queen(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 
-    class Rook extends Piece{
+    class Rook{
+        + Rook(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 
-    class Pawn extends Piece{
+    class Pawn{
         - Boolean isPromoted
         - Boolean isPromotable
+        - Boolean firstMove
+
+        + Pawn(color : Integer, position : Position)
+
+        + getIsPromoted() : Boolean
+        + getIsPromotable() : Boolean
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+        + setIsPromoted(isPromoted : Boolean) : void
+        + setIsPromotable( isPromotable : Boolean) : void
     }
 
-    class King extends Piece{
-        - isUndefendable : boolean
+    class King{
+        - Boolean isUndefendable
 
-        + getIsCapturable() : boolean
+        + King(color : Integer, position : Position)
 
-        + setIsCapturable() : void
+        + setMove(plateau : Piece[][], coord : Position) : void
+
+        + getIsUndefendable() : Boolean
+        + setIsUndefendable(isUndefendable : Boolean) : void
     }
 
-    class Bishop extends Piece{
+    class Bishop{
+        + Bishop(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 
-    class Knight extends Piece{
+    class Knight{
+        + Knight(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 }
 /'=================================
@@ -102,6 +128,21 @@ package view #f2d48d{
 /'=================================
   ===          LINKS            ===
   ================================='/
-Piece - Position : use >
+Position -- Piece : use >
 
+Knight --|> Piece
+Piece <|-- Pawn
+Piece <|-- Bishop
+Piece <|-- Rook
+King -|> Piece
+Piece <|-u- Queen
+
+
+Piece - java.util.List : use >
+Player - java.util.List : use >
+java.util.ArrayList - Piece  : use <
+java.util.ArrayList - Player : use <
+java.util.List -l[hidden]- java.util.ArrayList
+
+GameViewer -l- Player : use >
 @enduml
