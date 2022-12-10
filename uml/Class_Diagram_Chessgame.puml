@@ -1,10 +1,5 @@
 @startuml
 /'=================================
-  ===          IMPORT           ===
-  ================================='/
-  package java.util.List{}
-  package java.util.ArrayList{}
-/'=================================
   ===          MODEL            ===
   ================================='/
 package model #8df2a8{
@@ -23,9 +18,9 @@ package model #8df2a8{
 
         + move(coord : Position) : Boolean
 
+        + setMove(plateau : Piece[][]) : void
         + setColor(color : Integer) : void
         + setPosition(position : Position) : void
-        + setMove(plateau : Piece[][], coord : Position) : void
         + setIsCaptured(isCaptured : Boolean) : void
 
     }
@@ -82,7 +77,8 @@ package model #8df2a8{
     class Bishop{
         + Bishop(color : Integer, position : Position)
 
-        + setMove(plateau : Piece[][], coord : Position) : void
+        + setMove(plateau : Piece[][]) : void
+        + addMove(plateau : Piece[][], j : Integer, i : Integer) : Boolean
     }
 
     class Knight{
@@ -128,21 +124,15 @@ package view #f2d48d{
 /'=================================
   ===          LINKS            ===
   ================================='/
-Position -- Piece : use >
+Position - Piece : use <
 
-Knight --|> Piece
-Piece <|-- Pawn
-Piece <|-- Bishop
-Piece <|-- Rook
-King -|> Piece
-Piece <|-u- Queen
+Knight --* Piece
+Piece *-- Pawn
+Piece *-- Bishop
+Piece *-- Rook
+King --* Piece
+Piece *-u- Queen
 
-
-Piece - java.util.List : use >
-Player - java.util.List : use >
-java.util.ArrayList - Piece  : use <
-java.util.ArrayList - Player : use <
-java.util.List -l[hidden]- java.util.ArrayList
 
 GameViewer -l- Player : use >
 @enduml

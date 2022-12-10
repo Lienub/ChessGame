@@ -28,87 +28,35 @@ public class Pawn extends Piece {
     public void setIsPromotable(Boolean isPromotable) {
         this.isPromotable = isPromotable;
     }
-
     @Override
-    public void setMove(Piece[][] plateau, Position coord){
-        //White Pawn
-        if(this.getColor() == 0){
+    public void setMove(Piece[][] plateau) {
+        possibleMoves.clear();
+        int side, pX = this.getPosition().getX(), pY = this.getPosition().getY();
+        System.out.println("Pawn: pX = " + pX + " pY = " + pY);
+        if(this.getColor() == 0) { System.out.println("Color White"); side = -1; }
+        else { System.out.println("Color Black"); side = 1; }
+
+        if(pY+1 < plateau.length && pY-1 > -1 && plateau[pX][pY+(1*side)] == null) {
+            System.out.println("Personne devant");
             if(this.firstMove){
-                if(plateau[this.position.getX()][this.position.getY() + 1] == null && plateau[this.position.getX()][this.position.getY() + 2] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 2));
-                }
-
-                if(plateau[this.position.getX()][this.position.getY() + 1] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 1));
-                }
-
-                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() + 1] != null && plateau[this.position.getX() + 1][this.position.getY() + 1].getColor() == 1){
-                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() + 1));
-                }
-
-                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() + 1] != null && plateau[this.position.getX() - 1][this.position.getY() + 1].getColor() == 1){
-                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() + 1));
-                }
-
-                this.firstMove = false;
-            }
-            else {
-                if(plateau[this.position.getX()][this.position.getY() + 1] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 1));
-                }
-
-                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() + 1] != null && plateau[this.position.getX() + 1][this.position.getY() + 1].getColor() == 1){
-                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() + 1));
-                }
-
-                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() + 1] != null && plateau[this.position.getX() - 1][this.position.getY() + 1].getColor() == 1){
-                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() + 1));
-                }
-
-                if(this.position.getY() == 1 && plateau[this.position.getX()][this.position.getY() + 2] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() + 2));
+                System.out.println("Premier mouvement");
+                if(plateau[pX][pY+2*side] == null) {
+                    this.possibleMoves.add(new Position(pX,pY + 2 * side));
+                    //System.out.println("Personne devant+1\nPossible move : " + pX + " " + (pY + 2 * side));
                 }
             }
+            this.possibleMoves.add(new Position(pX,pY + 1 * side));
+            //System.out.println("Possible move : " + pX + " " + (pY+1*side));
         }
-        else if(this.getColor() == 1)
-        {
-            if(this.firstMove)
-            {
-                if(plateau[this.position.getX()][this.position.getY() - 1] == null && plateau[this.position.getX()][this.position.getY() - 2] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 2));
-                }
 
-                if(plateau[this.position.getX()][this.position.getY() - 1] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 1));
-                }
-
-                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() - 1] != null && plateau[this.position.getX() + 1][this.position.getY() - 1].getColor() == 0){
-                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() - 1));
-                }
-
-                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() - 1] != null && plateau[this.position.getX() - 1][this.position.getY() - 1].getColor() == 0){
-                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() - 1));
-                }
-
-                this.firstMove = false;
-            }
-            else {
-                if(plateau[this.position.getX()][this.position.getY() - 1] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 1));
-                }
-
-                if(this.position.getX() + 1 < 8 && plateau[this.position.getX() + 1][this.position.getY() - 1] != null && plateau[this.position.getX() + 1][this.position.getY() - 1].getColor() == 0){
-                    this.possibleMoves.add(new Position(this.position.getX() + 1, this.position.getY() - 1));
-                }
-
-                if(this.position.getX() - 1 >= 0 && plateau[this.position.getX() - 1][this.position.getY() - 1] != null && plateau[this.position.getX() - 1][this.position.getY() - 1].getColor() == 0){
-                    this.possibleMoves.add(new Position(this.position.getX() - 1, this.position.getY() - 1));
-                }
-
-                if(this.position.getY() == 6 && plateau[this.position.getX()][this.position.getY() - 2] == null){
-                    this.possibleMoves.add(new Position(this.position.getX(), this.position.getY() - 2));
-                }
-            }
+        if(pX+1 < plateau.length && pY+1 < plateau.length && pY-1 > -1 && plateau[pX+1][pY+1*side] != null) {
+            this.possibleMoves.add(new Position(pX+1, pY+1*side));
+            //System.out.println("Ennemi dispo devant 1\nPossible move : " + (pX+1) + " " + (pY+1*side))
         }
+        if(pX-1 > -1 && pY+1 < plateau.length && pY-1 > -1 && plateau[pX-1][pY+1*side] != null) {
+            this.possibleMoves.add(new Position(pX-1, pY+1*side));
+            //System.out.println("Ennemi dispo devant 2\nPossible move : " + (pX-1) + " " + (pY+1*side))
+        }
+
     }
 }

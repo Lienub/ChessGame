@@ -1,12 +1,13 @@
 package model;
 
 public class Position {
-    private int xPos, yPos;
+    private int xPos = -1, yPos = -1;
 
     public Position(int x, int y) {
-        xPos = x;
-        yPos = y;
-
+        if(!(x < 0 || y < 0 || x > 7 || y > 7)) {
+            xPos = x;
+            yPos = y;
+        }
     }
 
     public void setPos(int x, int y)

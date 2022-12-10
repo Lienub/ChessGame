@@ -33,11 +33,13 @@ public abstract class Piece {
         return this.possibleMoves;
     }
 
-    public Boolean move(Position coord)
+    public Boolean move(Piece[][] plateau, Position coord)
     {
         if(this.possibleMoves.contains(coord)){
+            plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
             setPosition(coord);
-            possibleMoves.clear();
+            plateau[coord.getX()][coord.getY()] = this;
+            System.out.println("c'est bougé");
             return true;
         }
         return false;
@@ -50,12 +52,12 @@ public abstract class Piece {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    public void setMove(Piece[][] plateau, Position coord) {
-        this.possibleMoves = null;
-    }
-
     public void setIsCaptured(Boolean isCaptured) {
         this.isCaptured = isCaptured;
     }
+
+    public void setMove(Piece[][] plateau) {
+        return;
+    }
+
 }

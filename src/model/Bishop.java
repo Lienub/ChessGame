@@ -1,128 +1,43 @@
 package model;
 
+import java.util.Objects;
+
 public class Bishop extends Piece{
     public Bishop(Integer color, Position position) {
         super(color, position);
     }
-
     @Override
-    public void setMove(Piece[][] plateau, Position coord) {
-        //White Bishop
-        if(this.getColor() == 0) {
-            //Top Left
-            for (int i = 1; i < 8; i++) {
-                if (this.position.getX() - i >= 0 && this.position.getY() - i >= 0) {
-                    if (plateau[this.position.getX() - i][this.position.getY() - i] == null) {
-                        this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() - i));
-                    } else if (plateau[this.position.getX() - i][this.position.getY() - i].getColor() == 1) {
-                        this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() - i));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-            }
+    public void setMove(Piece[][] plateau) {
+        possibleMoves.clear();
+        int  pX = this.getPosition().getX(), pY = this.getPosition().getY();
 
-            //Top Right
-            for (int i = 1; i < 8; i++) {
-                if (this.position.getX() + i < 8 && this.position.getY() - i >= 0) {
-                    if (plateau[this.position.getX() + i][this.position.getY() - i] == null) {
-                        this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() - i));
-                    } else if (plateau[this.position.getX() + i][this.position.getY() - i].getColor() == 1) {
-                        this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() - i));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            //Bottom Left
-            for (int i = 1; i < 8; i++) {
-                if (this.position.getX() - i >= 0 && this.position.getY() + i < 8) {
-                    if (plateau[this.position.getX() - i][this.position.getY() + i] == null) {
-                        this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() + i));
-                    } else if (plateau[this.position.getX() - i][this.position.getY() + i].getColor() == 1) {
-                        this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() + i));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            //Bottom Right
-            for (int i = 1; i < 8; i++) {
-                if (this.position.getX() + i < 8 && this.position.getY() + i < 8) {
-                    if (plateau[this.position.getX() + i][this.position.getY() + i] == null) {
-                        this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() + i));
-                    } else if (plateau[this.position.getX() + i][this.position.getY() + i].getColor() == 1) {
-                        this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() + i));
-                        break;
-                    } else {
-                        break;
-                    }
-                }
-            }
+        for (int j = pY + 1, i = pX + 1; j < plateau.length && i < plateau.length ; j++, i++) {
+            if (addMove(plateau, j, i)) break;
         }
 
-            //Black Bishop
-        else{
-                //Top Left
-                for (int i = 1; i < 8; i++) {
-                    if (this.position.getX() - i >= 0 && this.position.getY() - i >= 0) {
-                        if (plateau[this.position.getX() - i][this.position.getY() - i] == null) {
-                            this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() - i));
-                        } else if (plateau[this.position.getX() - i][this.position.getY() - i].getColor() == 0) {
-                            this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() - i));
-                            break;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-
-                //Top Right
-                for (int i = 1; i < 8; i++) {
-                    if (this.position.getX() + i < 8 && this.position.getY() - i >= 0) {
-                        if (plateau[this.position.getX() + i][this.position.getY() - i] == null) {
-                            this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() - i));
-                        } else if (plateau[this.position.getX() + i][this.position.getY() - i].getColor() == 0) {
-                            this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() - i));
-                            break;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-
-                //Bottom Left
-                for (int i = 1; i < 8; i++) {
-                    if (this.position.getX() - i >= 0 && this.position.getY() + i < 8) {
-                        if (plateau[this.position.getX() - i][this.position.getY() + i] == null) {
-                            this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() + i));
-                        } else if (plateau[this.position.getX() - i][this.position.getY() + i].getColor() == 0) {
-                            this.possibleMoves.add(new Position(this.position.getX() - i, this.position.getY() + i));
-                            break;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-
-                //Bottom Right
-                for (int i = 1; i < 8; i++) {
-                    if (this.position.getX() + i < 8 && this.position.getY() + i < 8) {
-                        if (plateau[this.position.getX() + i][this.position.getY() + i] == null) {
-                            this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() + i));
-                        } else if (plateau[this.position.getX() + i][this.position.getY() + i].getColor() == 0) {
-                            this.possibleMoves.add(new Position(this.position.getX() + i, this.position.getY() + i));
-                            break;
-                        } else {
-                            break;
-                        }
-                    }
-                }
-            }
+        for (int j = pY - 1, i = pX + 1; j < -1 && i < plateau.length ; j--, i++) {
+            if (addMove(plateau, j, i)) break;
         }
+
+        for (int j = pY - 1, i = pX - 1; j < -1 && i < -1 ; j--, i--) {
+            if (addMove(plateau, j, i)) break;
+        }
+
+        for (int j = pY + 1, i = pX - 1; j < plateau.length && i < -1 ; j++, i--) {
+            if (addMove(plateau, j, i)) break;
+        }
+    }
+
+    private boolean addMove(Piece[][] plateau, int j, int i) {
+        Piece cur_pos = plateau[i][j];
+        if (cur_pos == null) {
+            possibleMoves.add(new Position(i, j));
+        } else if (!Objects.equals(cur_pos.getColor(), this.getColor())) {
+            possibleMoves.add(new Position(i, j));
+            return true;
+        } else {
+            return true;
+        }
+        return false;
+    }
 }
