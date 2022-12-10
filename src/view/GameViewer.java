@@ -9,12 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class GameViewer extends JFrame {
-    //private static GameViewer instance;
-    //private final JPanel gui = new JPanel(new BorderLayout(1, 1));
     private JButton[][] squares = new JButton[8][8];
     private JLabel[][] displayMoves = new JLabel[8][8];
     private static final String COLS = "ABCDEFGH";
-    //private JPanel board;
 
     public GameViewer() {
         super("Chess");
@@ -24,13 +21,24 @@ public class GameViewer extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+        this.add(panel);
 
-        //GridLayout plateau = new GridLayout(8, 8);
 
         JPanel chessBoard = new JPanel(new GridLayout(9, 9));
-        //chessBoard.setBorder(new LineBorder(Color.BLACK));
-        //gui.add(chessBoard);
+        JPanel J1Capture = new JPanel(new GridLayout(0,2));
+        JPanel J2Capture = new JPanel(new GridLayout(0,2));
+        JPanel miscInfos = new JPanel(new GridLayout(0,2));
 
+        panel.add(J1Capture, BorderLayout.WEST);
+        panel.add(J2Capture, BorderLayout.EAST);
+        panel.add(miscInfos, BorderLayout.NORTH);
+
+        J1Capture.add(new JLabel("test"));
+        J1Capture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        J2Capture.add(new JLabel("test"));
+        J2Capture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        miscInfos.add(new JLabel("test"));
+        miscInfos.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         Insets buttonMargin = new Insets(0, 0, 0, 0);
         for (int j = 0; j < squares.length; j++) {
             for (int i = 0; i < squares.length; i++) {
@@ -59,13 +67,10 @@ public class GameViewer extends JFrame {
 
         setActions();
 
-        //fill the chess board
         chessBoard.add(new JLabel(""));
-        // fill the top row
         for (int i = 0; i < 8; i++)
             chessBoard.add(new JLabel(COLS.substring(i, i + 1), SwingConstants.CENTER));
 
-        // fill the black non-pawn piece row
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (j == 0)
@@ -75,19 +80,12 @@ public class GameViewer extends JFrame {
             }
         }
 
-        this.add(chessBoard);
-        chessBoard.setVisible(true);
+        panel.add(chessBoard, BorderLayout.CENTER);
+        this.setContentPane(panel);
         //gui.setVisible(true);
         this.setVisible(true);
     }
 
-
-    /*private static GameViewer getInstance(){
-        if(instance == null){
-            instance = new GameViewer();
-        }
-        return instance;
-    }*/
 
     public void resetDisplayMoves(JLabel[][] displayMoves){
         for(int i = 0 ; i < 8; i++){
@@ -98,6 +96,13 @@ public class GameViewer extends JFrame {
         }
     }
 
+    /*public JPanel setupPanel(){
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+
+        for(int i = 0 ; i < 10 ; i++){
+            panel.add(new JLabel)
+        }
+    }*/
     public void displayPieces(Piece[][] piece){
         for(Piece[] col : piece){
             for (Piece p : col) {
@@ -138,7 +143,6 @@ public class GameViewer extends JFrame {
         }
         setActions();
     }
-
     public void setActions(){
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -169,14 +173,8 @@ public class GameViewer extends JFrame {
                             }
                         }
                     }
-                    System.out.println(MainGame.getPlateau()[X][Y].getClass().getSimpleName());
                 });
             }
         }
     }
-
-    /*public static void main(String args[]){
-        GameViewer plateau = GameViewer.getInstance();
-        plateau.init();
-    }*/
 }

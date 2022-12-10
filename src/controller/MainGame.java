@@ -37,7 +37,6 @@ public class MainGame {
     public static void setCurrentMoves(List<Position> moves){
         currentMoves = moves;
     }
-
     public static Piece[][] getPlateau(){
         return plateau;
     }
