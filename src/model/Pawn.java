@@ -3,7 +3,7 @@ package model;
 public class Pawn extends Piece {
     private Boolean isPromoted;
     private Boolean isPromotable;
-
+    private Boolean firstMove;
 
     public Pawn(Integer color, Position position) {
         super(color, position);
@@ -28,60 +28,35 @@ public class Pawn extends Piece {
     public void setIsPromotable(Boolean isPromotable) {
         this.isPromotable = isPromotable;
     }
-
     @Override
-    public void setIsMovable(Piece[][] plateau, Position coord){
-        //White Pawn
-        if(this.getColor() == 0){
+    public void setMove(Piece[][] plateau) {
+        possibleMoves.clear();
+        int side, pX = this.getPosition().getX(), pY = this.getPosition().getY();
+        System.out.println("Pawn: pX = " + pX + " pY = " + pY);
+        if(this.getColor() == 0) { System.out.println("Color White"); side = -1; }
+        else { System.out.println("Color Black"); side = 1; }
+
+        if(pY+1 < plateau.length && pY-1 > -1 && plateau[pX][pY+(1*side)] == null) {
+            System.out.println("Personne devant");
             if(this.firstMove){
-                if(getPosition().getX() == coord.getX() && getPosition().getY()-2 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX() == coord.getX() && getPosition().getY()-1 ==coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
+                System.out.println("Premier mouvement");
+                if(plateau[pX][pY+2*side] == null) {
+                    this.possibleMoves.add(new Position(pX,pY + 2 * side));
+                    //System.out.println("Personne devant+1\nPossible move : " + pX + " " + (pY + 2 * side));
+                }
             }
-            else {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 ==coord.getX() && getPosition().getY()-1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 1)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
-            }
+            this.possibleMoves.add(new Position(pX,pY + 1 * side));
+            //System.out.println("Possible move : " + pX + " " + (pY+1*side));
         }
-        else if(this.getColor() == 1)
-        {
-            if(this.firstMove)
-            {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()+2 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX() == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
-            }
-            else
-            {
-                if(getPosition().getX() == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] == null)
-                    this.isMovable = true;
-                else if(getPosition().getX()-1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else if(getPosition().getX()+1 == coord.getX() && getPosition().getY()+1 == coord.getY() && plateau[coord.getX()][coord.getY()] != null && plateau[coord.getX()][coord.getY()].getColor() == 0)
-                    this.isMovable = true;
-                else
-                    this.isMovable = false;
-            }
+
+        if(pX+1 < plateau.length && pY+1 < plateau.length && pY-1 > -1 && plateau[pX+1][pY+1*side] != null) {
+            this.possibleMoves.add(new Position(pX+1, pY+1*side));
+            //System.out.println("Ennemi dispo devant 1\nPossible move : " + (pX+1) + " " + (pY+1*side))
         }
+        if(pX-1 > -1 && pY+1 < plateau.length && pY-1 > -1 && plateau[pX-1][pY+1*side] != null) {
+            this.possibleMoves.add(new Position(pX-1, pY+1*side));
+            //System.out.println("Ennemi dispo devant 2\nPossible move : " + (pX-1) + " " + (pY+1*side))
+        }
+
     }
 }

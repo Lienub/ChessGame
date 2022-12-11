@@ -1,17 +1,19 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Piece {
     private Integer color;
     protected Position position;
-    protected Boolean isMovable;
     protected Boolean isCaptured;
-    protected Boolean firstMove;
+    protected List<Position> possibleMoves;
 
     public Piece(Integer color, Position position) {
         this.color = color;
         this.position = position;
-        this.isMovable = true;
         this.isCaptured = false;
+        this.possibleMoves = new ArrayList<>();
     }
 
 
@@ -23,19 +25,21 @@ public abstract class Piece {
         return this.position;
     }
 
-    public Boolean getIsMovable() {
-        return this.isMovable;
-    }
-
     public Boolean getIsCaptured() {
         return null;
     }
 
-    public Boolean move(Position coord)
+    public List<Position> getPossibleMoves() {
+        return this.possibleMoves;
+    }
+
+    public Boolean move(Piece[][] plateau, Position coord)
     {
-        if(getIsMovable()) {
+        if(this.possibleMoves.contains(coord)){
+            plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
             setPosition(coord);
-            firstMove = false;
+            plateau[coord.getX()][coord.getY()] = this;
+            System.out.println("c'est bougé");
             return true;
         }
         return false;
@@ -48,12 +52,12 @@ public abstract class Piece {
     public void setPosition(Position position) {
         this.position = position;
     }
-
-    public void setIsMovable(Piece[][] plateau, Position coord) {
-        this.isMovable = true;
-    }
-
     public void setIsCaptured(Boolean isCaptured) {
         this.isCaptured = isCaptured;
     }
+
+    public void setMove(Piece[][] plateau) {
+        return;
+    }
+
 }

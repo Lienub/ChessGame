@@ -1,26 +1,25 @@
 @startuml
 /'=================================
-  ===          MODEL           ===
+  ===          MODEL            ===
   ================================='/
 package model #8df2a8{
     abstract class Piece {
-        - private Integer color
-        - private Position position
-        - private Boolean isMovable
-        - private Boolean isCapturable
-        - private Boolean firstMove
+        - Integer color
+        # Boolean isCapturable
+        # List<Position> possibleMoves
 
         + Piece(color : Integer, position : Position)
+
         + getColor() : Integer
         + getPosition() : Position
-        + getIsMovable() : Boolean
         + getIsCaptured() : Boolean
+        + getPossibleMoves() : List<Position>
 
         + move(coord : Position) : Boolean
 
+        + setMove(plateau : Piece[][]) : void
         + setColor(color : Integer) : void
         + setPosition(position : Position) : void
-        + setIsMovable(plateau : Piece[][], coord : Position) : void
         + setIsCaptured(isCaptured : Boolean) : void
 
     }
@@ -36,33 +35,55 @@ package model #8df2a8{
         + getY() : Integer
     }
 
-    class Queen extends Piece{
+    class Queen{
+        + Queen(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 
-    class Rook extends Piece{
+    class Rook{
+        + Rook(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 
-    class Pawn extends Piece{
+    class Pawn{
         - Boolean isPromoted
         - Boolean isPromotable
+        - Boolean firstMove
+
+        + Pawn(color : Integer, position : Position)
+
+        + getIsPromoted() : Boolean
+        + getIsPromotable() : Boolean
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+        + setIsPromoted(isPromoted : Boolean) : void
+        + setIsPromotable( isPromotable : Boolean) : void
     }
 
-    class King extends Piece{
-        - isUndefendable : boolean
+    class King{
+        - Boolean isUndefendable
 
-        + getIsCapturable() : boolean
+        + King(color : Integer, position : Position)
 
-        + setIsCapturable() : void
+        + setMove(plateau : Piece[][], coord : Position) : void
+
+        + getIsUndefendable() : Boolean
+        + setIsUndefendable(isUndefendable : Boolean) : void
     }
 
-    class Bishop extends Piece{
+    class Bishop{
+        + Bishop(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][]) : void
+        + addMove(plateau : Piece[][], j : Integer, i : Integer) : Boolean
     }
 
-    class Knight extends Piece{
+    class Knight{
+        + Knight(color : Integer, position : Position)
 
+        + setMove(plateau : Piece[][], coord : Position) : void
     }
 }
 /'=================================
@@ -70,38 +91,81 @@ package model #8df2a8{
   ================================='/
 package controller #f28d97{
     class MainGame{
+        - {static} Piece[][] plateau
+        - {static} List<Position> currentMoves
+        - {static} GameViewer board_view
+
+        + {static} main(String args[]) : void
+
+        + {static} addPiece(pieces : List<Piece>) : void
+        + {static} movePiece(p : Piece, pos : Position) : void
+
+        + {static} getPlateau() : Piece[][]
+        + {static} getCurrentMoves() : List<Position>
+
+        + {static} setCurrentMoves(moves : List<Position>) : void
+        + {static} setCurrentPos(pos : Position) : void
+
     }
+
+    class Player {
+            - playerName : String
+            - playerColor : Integer
+            - listPiece : List<Piece>
+            - deadPiece : List<Piece>
+
+            + Joueur(playerName : String, playerColor : Integer)
+
+            + getName() : String
+            + getColor() : Integer
+            + getAllPiece() : List<Piece>
+            + getDeadPiece() : List<Piece>
+
+            + initPiece() : void
+            + removePiece(coord : Position)
+        }
 }
 /'=================================
   ===           VIEW            ===
   ================================='/
 package view #f2d48d{
-    class Player {
-        - playerName : String
-        - playerColor : Integer
-        - listPiece : List<Piece>
-        - deadPiece : List<Piece>
 
-        + Joueur(playerName : String, playerColor : Integer)
-
-        + getName() : String
-        + getColor() : Integer
-        + getAllPiece() : List<Piece>
-        + getDeadPiece() : List<Piece>
-
-        + initPiece() : void
-        + removePiece(coord : Position)
-    }
 
     class GameViewer {
-        - instance : GameViewer
+        - JButton[][] squares
+        - JLabel[][] displayMoves
+        - {static} String COLS
 
-        + GameViewer() : GameViewer
+        + GameViewer()
+
+        + displayPieces(plateau : Piece[][]) : void
+        + resetDisplayPiece(plateau : Piece[][]) : void
+        + resetDisplayMoves( displayMoves : JLabel[][]) : void
+
+        + update() : void
+        + setActions() : void
+
     }
 }
 /'=================================
   ===          LINKS            ===
   ================================='/
-Piece - Position : use >
+
+Position -  Piece : use "# position : Position" <
+Position -  MainGame : use "- currentPos : Position" <
+Piece - MainGame : use "- plateau : Piece[][]" <
+
+MainGame -d- Player : use >
+controller - Piece : manipulate >
+GameViewer -- Piece : check >
+GameViewer - MainGame : transmit data  >
+
+Knight --* Piece
+Piece *-- Pawn
+Piece *-- Bishop
+Piece *-- Rook
+King --* Piece
+Piece *-u- Queen
+
 
 @enduml
