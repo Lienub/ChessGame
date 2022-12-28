@@ -151,9 +151,15 @@ package view #f2d48d{
   ===          LINKS            ===
   ================================='/
 
+<<<<<<< HEAD
+Position -d- Piece : use "# position : Position" <
+Position -u-  MainGame : use "- currentPos : Position" <
+Piece --u- MainGame : use "- plateau : Piece[][]" <
+=======
 Position -  Piece : use "# position : Position" <
 Position -  MainGame : use "- currentPos : Position" <
 Piece - MainGame : use "- plateau : Piece[][]" <
+>>>>>>> c654c07325a7d6cb5671da19151bc8b41ded422d
 
 MainGame -d- Player : use >
 controller - Piece : manipulate >

@@ -9,17 +9,24 @@ public class Rook extends Piece{
     @Override
     public void setMove(Piece[][] plateau) {
         possibleMoves.clear();
+        possibleCaptures.clear();
+
         int pX = this.getPosition().getX(), pY = this.getPosition().getY();
 
         for (int j = pY + 1; j < plateau.length; j++) {
             if (addMove(plateau, j, pX)) break;
-            if (addMove(plateau, pY, j)) break;
         }
         for (int j = pY - 1; j > -1; j--) {
             if (addMove(plateau, j, pX)) break;
-            if (addMove(plateau, pY, j)) break;
+        }
+        for (int i = pX + 1; i < plateau.length; i++) {
+            if (addMove(plateau, pY, i)) break;
+        }
+        for (int i = pX - 1; i > -1; i--) {
+            if (addMove(plateau, pY, i)) break;
         }
 
+        setCapture(plateau);
     }
 
     private boolean addMove(Piece[][] plateau, int j, int i) {
@@ -33,5 +40,4 @@ public class Rook extends Piece{
             return true;
         }
     }
-
 }

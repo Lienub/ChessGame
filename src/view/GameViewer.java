@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 public class GameViewer extends JFrame {
     private JButton[][] squares = new JButton[8][8];
     private JLabel[][] displayMoves = new JLabel[8][8];
+    private JLabel[][] displayCaptures = new JLabel[8][8];
     private static final String COLS = "ABCDEFGH";
 
     public GameViewer() {
@@ -44,8 +45,10 @@ public class GameViewer extends JFrame {
             for (int i = 0; i < squares.length; i++) {
                 JButton b = new JButton();
                 JLabel l = new JLabel("", JLabel.CENTER);
+                JLabel c = new JLabel("", JLabel.CENTER);
 
                 l.setVisible(false);
+                c.setVisible(false);
                 b.setLayout(new GridBagLayout());
                 b.setMargin(buttonMargin);
                 /*
@@ -59,8 +62,10 @@ public class GameViewer extends JFrame {
 
                 squares[i][j] = b;
                 displayMoves[i][j] = l;
+                displayCaptures[i][j] = c;
 
                 squares[i][j].add(displayMoves[i][j], SwingConstants.CENTER);
+                squares[i][j].add(displayCaptures[i][j], SwingConstants.CENTER);
                 System.out.println("Case ligne " + i + " et colonne " + j);
             }
         }
@@ -87,11 +92,11 @@ public class GameViewer extends JFrame {
     }
 
 
-    public void resetDisplayMoves(JLabel[][] displayMoves){
+    public void resetDisplayMoves(JLabel[][] display){
         for(int i = 0 ; i < 8; i++){
             for(int j = 0 ; j < 8; j++){
-                displayMoves[i][j].setIcon(null);
-                displayMoves[i][j].setVisible(false);
+                display[i][j].setIcon(null);
+                display[i][j].setVisible(false);
             }
         }
     }
@@ -150,11 +155,13 @@ public class GameViewer extends JFrame {
                 int Y = i;
                 squares[X][Y].addActionListener(actionEvent -> {
                     resetDisplayMoves(displayMoves);
+                    resetDisplayMoves(displayCaptures);
                     System.out.println("Button : " + X + " " + Y);
                     if (MainGame.getPlateau()[X][Y] != null) {
                         MainGame.getPlateau()[X][Y].setMove(MainGame.getPlateau());
                         MainGame.setCurrentPos(MainGame.getPlateau()[X][Y].getPosition());
                         MainGame.setCurrentMoves(MainGame.getPlateau()[X][Y].getPossibleMoves());
+                        MainGame.setCurrentCaptures(MainGame.getPlateau()[X][Y].getPossibleCaptures());
                         for (Position p : MainGame.getCurrentMoves()) {
                             System.out.println("Possible moves : " + p.getX() + " " + p.getY());
                             try {
@@ -163,6 +170,16 @@ public class GameViewer extends JFrame {
                                 System.out.println(e + "\nGiven path : /pieces/circle.png");
                             }
                             displayMoves[p.getX()][p.getY()].setVisible(true);
+                        }
+
+                        for(Position p : MainGame.getCurrentCaptures()){
+                            System.out.println("Possible captures : " + p.getX() + " " + p.getY());
+                            try {
+                                displayCaptures[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/pieces/circle2.png"))));
+                            } catch (Exception e) {
+                                System.out.println(e + "\nGiven path : /pieces/circle2.png");
+                            }
+                            displayCaptures[p.getX()][p.getY()].setVisible(true);
                         }
                     }
                     if(MainGame.getCurrentPos() != null) {
@@ -173,6 +190,7 @@ public class GameViewer extends JFrame {
                             }
                         }
                     }
+
                 });
             }
         }

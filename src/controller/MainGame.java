@@ -7,6 +7,7 @@ import java.util.List;
 public class MainGame {
     private static Piece[][] plateau = new Piece[8][8];
     private static List<Position> currentMoves;
+    private static List<Position> currentCaptures;
     private static Position currentPos;
     private static GameViewer board_view;
     public static void main(String args[]) {
@@ -36,6 +37,12 @@ public class MainGame {
     }
     public static void setCurrentMoves(List<Position> moves){
         currentMoves = moves;
+    }
+    public static List<Position> getCurrentCaptures(){
+        return currentCaptures;
+    }
+    public static void setCurrentCaptures(List<Position> captures){
+        currentCaptures = captures;
     }
     public static Piece[][] getPlateau(){
         return plateau;
