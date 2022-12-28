@@ -1,0 +1,9 @@
+@startuml
+skinparam classBorderColor #4F4F4F
+skinparam classBackgroundColor #FFFFFD
+
+class Tour extends Piece{
+
+}
+
+@enduml

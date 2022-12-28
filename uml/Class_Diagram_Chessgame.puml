@@ -1,0 +1,177 @@
+@startuml
+/'=================================
+  ===          MODEL            ===
+  ================================='/
+package model #8df2a8{
+    abstract class Piece {
+        - Integer color
+        # Boolean isCapturable
+        # List<Position> possibleMoves
+
+        + Piece(color : Integer, position : Position)
+
+        + getColor() : Integer
+        + getPosition() : Position
+        + getIsCaptured() : Boolean
+        + getPossibleMoves() : List<Position>
+
+        + move(coord : Position) : Boolean
+
+        + setMove(plateau : Piece[][]) : void
+        + setColor(color : Integer) : void
+        + setPosition(position : Position) : void
+        + setIsCaptured(isCaptured : Boolean) : void
+
+    }
+
+    class Position{
+        - xPos : int
+        - yPos : int
+
+        + Position(x : int, y : int)
+        + setPos(x : int, y : int) : void
+        + equals(p : Position) : Boolean
+        + getX() : Integer
+        + getY() : Integer
+    }
+
+    class Queen{
+        + Queen(color : Integer, position : Position)
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+    }
+
+    class Rook{
+        + Rook(color : Integer, position : Position)
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+    }
+
+    class Pawn{
+        - Boolean isPromoted
+        - Boolean isPromotable
+        - Boolean firstMove
+
+        + Pawn(color : Integer, position : Position)
+
+        + getIsPromoted() : Boolean
+        + getIsPromotable() : Boolean
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+        + setIsPromoted(isPromoted : Boolean) : void
+        + setIsPromotable( isPromotable : Boolean) : void
+    }
+
+    class King{
+        - Boolean isUndefendable
+
+        + King(color : Integer, position : Position)
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+
+        + getIsUndefendable() : Boolean
+        + setIsUndefendable(isUndefendable : Boolean) : void
+    }
+
+    class Bishop{
+        + Bishop(color : Integer, position : Position)
+
+        + setMove(plateau : Piece[][]) : void
+        + addMove(plateau : Piece[][], j : Integer, i : Integer) : Boolean
+    }
+
+    class Knight{
+        + Knight(color : Integer, position : Position)
+
+        + setMove(plateau : Piece[][], coord : Position) : void
+    }
+}
+/'=================================
+  ===        CONTROLLER         ===
+  ================================='/
+package controller #f28d97{
+    class MainGame{
+        - {static} Piece[][] plateau
+        - {static} List<Position> currentMoves
+        - {static} GameViewer board_view
+
+        + {static} main(String args[]) : void
+
+        + {static} addPiece(pieces : List<Piece>) : void
+        + {static} movePiece(p : Piece, pos : Position) : void
+
+        + {static} getPlateau() : Piece[][]
+        + {static} getCurrentMoves() : List<Position>
+
+        + {static} setCurrentMoves(moves : List<Position>) : void
+        + {static} setCurrentPos(pos : Position) : void
+
+    }
+
+    class Player {
+            - playerName : String
+            - playerColor : Integer
+            - listPiece : List<Piece>
+            - deadPiece : List<Piece>
+
+            + Joueur(playerName : String, playerColor : Integer)
+
+            + getName() : String
+            + getColor() : Integer
+            + getAllPiece() : List<Piece>
+            + getDeadPiece() : List<Piece>
+
+            + initPiece() : void
+            + removePiece(coord : Position)
+        }
+}
+/'=================================
+  ===           VIEW            ===
+  ================================='/
+package view #f2d48d{
+
+
+    class GameViewer {
+        - JButton[][] squares
+        - JLabel[][] displayMoves
+        - {static} String COLS
+
+        + GameViewer()
+
+        + displayPieces(plateau : Piece[][]) : void
+        + resetDisplayPiece(plateau : Piece[][]) : void
+        + resetDisplayMoves( displayMoves : JLabel[][]) : void
+
+        + update() : void
+        + setActions() : void
+
+    }
+}
+/'=================================
+  ===          LINKS            ===
+  ================================='/
+
+<<<<<<< HEAD
+Position -d- Piece : use "# position : Position" <
+Position -u-  MainGame : use "- currentPos : Position" <
+Piece --u- MainGame : use "- plateau : Piece[][]" <
+=======
+Position -  Piece : use "# position : Position" <
+Position -  MainGame : use "- currentPos : Position" <
+Piece - MainGame : use "- plateau : Piece[][]" <
+>>>>>>> c654c07325a7d6cb5671da19151bc8b41ded422d
+
+MainGame -d- Player : use >
+controller - Piece : manipulate >
+GameViewer -- Piece : check >
+GameViewer - MainGame : transmit data  >
+
+Knight --* Piece
+Piece *-- Pawn
+Piece *-- Bishop
+Piece *-- Rook
+King --* Piece
+Piece *-u- Queen
+
+
+@enduml
