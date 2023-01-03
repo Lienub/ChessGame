@@ -4,19 +4,23 @@ import java.util.Objects;
 import java.util.List;
 
 public class King extends Piece {
-    private Boolean isUndefendable;
+    private String state;
 
     public King(Integer color, Position position) {
         super(color, position);
     }
 
 
-    public Boolean getIsUndefendable() {
-        return this.isUndefendable;
+    public String getState() {
+        return this.state;
     }
 
-    public void setIsUndefendable (Boolean isUndefendable) {
-        this.isUndefendable = isUndefendable;
+    public void setState() {
+        //checking if the king is in check
+        if (this.getPossibleCaptures().size() > 0) {
+            this.state = "check";
+        }
+
     }
     @Override
     public void setMove(Piece[][] plateau){

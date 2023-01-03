@@ -22,10 +22,11 @@ public class Pawn extends Piece {
 
     @Override
     public Boolean move(Piece[][] plateau, Position coord) {
-        if(this.possibleMoves.contains(coord)){
+        if(this.possibleMoves.contains(coord) || this.possibleCaptures.contains(coord)){
             plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
             setPosition(coord);
             plateau[coord.getX()][coord.getY()] = this;
+            notifyObservers();
             System.out.println("c'est bougé");
             this.firstMove = false;
             return true;

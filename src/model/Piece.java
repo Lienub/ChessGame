@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class Piece {
+    protected ArrayList<PieceObserver> Observers = new ArrayList<>();
     private Integer color;
     protected Position position;
     protected Boolean isCaptured;
@@ -19,7 +20,22 @@ public abstract class Piece {
         this.possibleCaptures = new ArrayList<>();
     }
 
+    public void addObserver(PieceObserver observer){
+        Observers.add(observer);
+        System.out.println("observer added.");
+    }
 
+    public void removeObserver(PieceObserver observer){
+        Observers.remove(observer);
+    }
+
+    public void notifyObservers(){
+        System.out.println("notified?");
+        for (PieceObserver observer : Observers) {
+            System.out.println("notified.");
+            observer.reactTo(this);
+        }
+    }
     public Integer getColor() {
         return this.color;
     }
@@ -29,7 +45,7 @@ public abstract class Piece {
     }
 
     public Boolean getIsCaptured() {
-        return null;
+        return this.isCaptured;
     }
 
     public List<Position> getPossibleMoves() {
@@ -42,10 +58,11 @@ public abstract class Piece {
 
     public Boolean move(Piece[][] plateau, Position coord)
     {
-        if(this.possibleMoves.contains(coord)){
+        if(this.possibleMoves.contains(coord) || this.possibleCaptures.contains(coord)){
             plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
             setPosition(coord);
             plateau[coord.getX()][coord.getY()] = this;
+            notifyObservers();
             System.out.println("c'est bougé");
             return true;
         }
@@ -59,8 +76,12 @@ public abstract class Piece {
     public void setPosition(Position position) {
         this.position = position;
     }
-    public void setIsCaptured(Boolean isCaptured) {
+    public void setIsCaptured(Piece[][] plateau, Boolean isCaptured) {
         this.isCaptured = isCaptured;
+        System.out.println("isCaptured = " + isCaptured);
+        System.out.println("captured");
+        plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
+        notifyObservers();
     }
 
     public void setMove(Piece[][] plateau) {

@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.tools.javac.Main;
 import controller.MainGame;
 import model.*;
 
@@ -7,16 +8,24 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.List;
 
 public class GameViewer extends JFrame {
     private JButton[][] squares = new JButton[8][8];
     private JLabel[][] displayMoves = new JLabel[8][8];
     private JLabel[][] displayCaptures = new JLabel[8][8];
+    private JLabel turn = new JLabel("Tour du joueur "+ (MainGame.getCurrentPlayer().getName()), SwingConstants.CENTER);
+    JPanel J1Capture = new JPanel(new GridLayout(5,2));
+    int J1CaptureCount = 0;
+    JPanel J2Capture = new JPanel(new GridLayout(5,2));
+    int J2CaptureCount = 0;
     private static final String COLS = "ABCDEFGH";
 
     public GameViewer() {
         super("Chess");
-        this.setSize(1000, 1000);
+        this.setSize(1277, 1000);
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -26,19 +35,28 @@ public class GameViewer extends JFrame {
 
 
         JPanel chessBoard = new JPanel(new GridLayout(9, 9));
-        JPanel J1Capture = new JPanel(new GridLayout(0,2));
-        JPanel J2Capture = new JPanel(new GridLayout(0,2));
+        J1Capture.setPreferredSize(new Dimension(200, 1000));
+        for(int i = 0; i < 10; i++){
+            JLabel label = new JLabel();
+            label.setPreferredSize(new Dimension(60,60));
+            J1Capture.add(label);
+        }
+        J2Capture.setPreferredSize(new Dimension(200, 1000));
+        for(int i = 0; i < 10; i++){
+            JLabel label = new JLabel();
+            label.setPreferredSize(new Dimension(60,60));
+            J2Capture.add(label);
+        }
         JPanel miscInfos = new JPanel(new GridLayout(0,2));
+        miscInfos.setPreferredSize(new Dimension(1120, 100));
+        miscInfos.add(turn);
 
         panel.add(J1Capture, BorderLayout.WEST);
         panel.add(J2Capture, BorderLayout.EAST);
         panel.add(miscInfos, BorderLayout.NORTH);
 
-        J1Capture.add(new JLabel("test"));
         J1Capture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        J2Capture.add(new JLabel("test"));
         J2Capture.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        miscInfos.add(new JLabel("test"));
         miscInfos.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         Insets buttonMargin = new Insets(0, 0, 0, 0);
         for (int j = 0; j < squares.length; j++) {
@@ -87,11 +105,10 @@ public class GameViewer extends JFrame {
 
         panel.add(chessBoard, BorderLayout.CENTER);
         this.setContentPane(panel);
-        //gui.setVisible(true);
         this.setVisible(true);
+
+        System.out.println(chessBoard.getSize());
     }
-
-
     public void resetDisplayMoves(JLabel[][] display){
         for(int i = 0 ; i < 8; i++){
             for(int j = 0 ; j < 8; j++){
@@ -100,14 +117,6 @@ public class GameViewer extends JFrame {
             }
         }
     }
-
-    /*public JPanel setupPanel(){
-        JPanel panel = new JPanel(new GridLayout(0, 2));
-
-        for(int i = 0 ; i < 10 ; i++){
-            panel.add(new JLabel)
-        }
-    }*/
     public void displayPieces(Piece[][] piece){
         for(Piece[] col : piece){
             for (Piece p : col) {
@@ -118,7 +127,7 @@ public class GameViewer extends JFrame {
                     try {
                         squares[p.getPosition().getX()][p.getPosition().getY()]
                                 .setIcon(new ImageIcon(ImageIO
-                                        .read(getClass().getResource("/pieces/" + color + p.getClass().getSimpleName()+".png"))
+                                        .read(Objects.requireNonNull(getClass().getResource("/pieces/" + color + p.getClass().getSimpleName() + ".png")))
                                 ))
                         ;
                     } catch (Exception e) {
@@ -129,7 +138,7 @@ public class GameViewer extends JFrame {
         }
     }
 
-    public void resetDisplayPiece(Piece[][] piece){
+    public void resetDisplayPiece(){
         for(int i = 0 ; i < 8; i++){
             for(int j = 0 ; j < 8; j++){
                 squares[i][j].setIcon(null);
@@ -137,7 +146,8 @@ public class GameViewer extends JFrame {
         }
     }
     public void update(Piece[][] plateau){
-        resetDisplayPiece(plateau);
+        System.out.println("Update");
+        resetDisplayPiece();
         displayPieces(plateau);
         for (JButton[] col : squares){
             for(JButton b : col){
@@ -147,6 +157,33 @@ public class GameViewer extends JFrame {
             }
         }
         setActions();
+        System.out.println("Update done");
+    }
+
+    public void addCapture(Piece p){
+        Component c = null;
+        if(p.getColor() == 0) {
+            c = J1Capture.getComponent(J1CaptureCount);
+            J1CaptureCount++;
+        }
+        else {
+            c = J2Capture.getComponent(J2CaptureCount);
+            J2CaptureCount++;
+        }
+        if(c instanceof JLabel){
+            JLabel l = (JLabel) c;
+            String color;
+            if (p.getColor() == 0) color = "w_";
+            else color = "b_";
+            try {
+                l.setIcon(new ImageIcon(ImageIO
+                        .read(Objects.requireNonNull(getClass().getResource("/pieces/" + color + p.getClass().getSimpleName() + ".png")))
+                ))
+                ;
+            } catch (Exception e) {
+                System.out.println(e + "\nGiven path : /pieces/" + color + p.getClass().getSimpleName()+".png");
+            }
+        }
     }
     public void setActions(){
         for (int i = 0; i < 8; i++) {
@@ -157,7 +194,7 @@ public class GameViewer extends JFrame {
                     resetDisplayMoves(displayMoves);
                     resetDisplayMoves(displayCaptures);
                     System.out.println("Button : " + X + " " + Y);
-                    if (MainGame.getPlateau()[X][Y] != null) {
+                    if (MainGame.getPlateau()[X][Y] != null && MainGame.getPlateau()[X][Y].getColor() == MainGame.getCurrentPlayer().getColor()){
                         MainGame.getPlateau()[X][Y].setMove(MainGame.getPlateau());
                         MainGame.setCurrentPos(MainGame.getPlateau()[X][Y].getPosition());
                         MainGame.setCurrentMoves(MainGame.getPlateau()[X][Y].getPossibleMoves());
@@ -165,7 +202,7 @@ public class GameViewer extends JFrame {
                         for (Position p : MainGame.getCurrentMoves()) {
                             System.out.println("Possible moves : " + p.getX() + " " + p.getY());
                             try {
-                                displayMoves[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/pieces/circle.png"))));
+                                displayMoves[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/pieces/circle.png")))));
                             } catch (Exception e) {
                                 System.out.println(e + "\nGiven path : /pieces/circle.png");
                             }
@@ -175,7 +212,7 @@ public class GameViewer extends JFrame {
                         for(Position p : MainGame.getCurrentCaptures()){
                             System.out.println("Possible captures : " + p.getX() + " " + p.getY());
                             try {
-                                displayCaptures[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/pieces/circle2.png"))));
+                                displayCaptures[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/pieces/circle2.png")))));
                             } catch (Exception e) {
                                 System.out.println(e + "\nGiven path : /pieces/circle2.png");
                             }
@@ -183,14 +220,29 @@ public class GameViewer extends JFrame {
                         }
                     }
                     if(MainGame.getCurrentPos() != null) {
+                        boolean present = false;
                         for (Position p : MainGame.getCurrentMoves()) {
-                            if (p.getX() == X && p.getY() == Y) {
+                            if (p.equals(new Position(X, Y))) {
                                 System.out.println("ok");
                                 MainGame.movePiece(MainGame.getPlateau()[MainGame.getCurrentPos().getX()][MainGame.getCurrentPos().getY()], p);
+                                turn.setText("Tour du joueur " + (MainGame.getCurrentPlayer().getName()));
+                                present = true;
                             }
                         }
+                        for (Position c : MainGame.getCurrentCaptures()) {
+                            if (c.equals(new Position(X, Y))) {
+                                MainGame.capturePiece(MainGame.getPlateau()[X][Y]);
+                                MainGame.movePiece(MainGame.getPlateau()[MainGame.getCurrentPos().getX()][MainGame.getCurrentPos().getY()], c);
+                                MainGame.setCurrentPos(null);
+                                MainGame.setCurrentMoves(null);
+                                turn.setText("Tour du joueur " + (MainGame.getCurrentPlayer().getName()));
+                                present = true;
+                            }
+                        }
+                        if(!present && !MainGame.getCurrentPos().equals(new Position(X,Y))){
+                            MainGame.setCurrentPos(null);
+                        }
                     }
-
                 });
             }
         }

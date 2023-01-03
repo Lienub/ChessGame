@@ -48,13 +48,9 @@ public class Player {
         this.listPiece.add(new Queen(this.getColor(), new Position(3,column1)));
     }
 
-    public void removePiece(Position coord){
-        for( Piece p : this.listPiece) {
-            if (coord.getX() == p.getPosition().getX() && coord.getY() == p.getPosition().getY()) {
-                this.listPiece.remove(p);
-                this.deadPiece.add(p);
-                return;
-            }
-        }
+    public void removePiece(Piece[][] plateau, Piece p){
+        System.out.println("Capture!");
+        this.deadPiece.add(p);
+        p.setIsCaptured(plateau,true);
     }
 }

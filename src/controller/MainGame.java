@@ -5,19 +5,29 @@ import view.*;
 import java.util.List;
 
 public class MainGame {
-    private static Piece[][] plateau = new Piece[8][8];
+    public static Piece[][] plateau = new Piece[8][8];
     private static List<Position> currentMoves;
     private static List<Position> currentCaptures;
     private static Position currentPos;
-    private static GameViewer board_view;
+    private static Player currentPlayer;
+    private static  Player player1;
+    private static  Player player2;
+
+    public static GameViewer board_view;
     public static void main(String args[]) {
 
 
-        Player player1 = new Player("Julien", 0);
-        Player player2 = new Player("Rayane", 1);
+        player1 = new Player("Julien", 0);
+        player2 = new Player("Rayane", 1);
+        currentPlayer = player1;
         addPiece(player1.getAllPiece());
         addPiece(player2.getAllPiece());
-
+        for(Piece p : player1.getAllPiece()){
+            p.addObserver(new GraphicalObserver());
+        }
+        for(Piece p : player2.getAllPiece()){
+            p.addObserver(new GraphicalObserver());
+        }
         board_view = new GameViewer();
         board_view.displayPieces(plateau);
     }
@@ -29,9 +39,28 @@ public class MainGame {
 
     public static void movePiece(Piece p, Position pos) {
         p.move(plateau,pos);
-        board_view.update(plateau);
+        if (currentPlayer == player1) {
+            currentPlayer = player2;
+        }
+        else{
+            currentPlayer = player1;
+        }
+        System.out.println("J'ai bougé");
+        System.out.println("Tour au joueur "+ currentPlayer.getName());
     }
 
+    public static void capturePiece(Piece p) {
+        if (p.getColor() == 0) {
+            player2.removePiece(plateau,p);
+        }
+        else{
+            player1.removePiece(plateau,p);
+        }
+        System.out.println("Je vais bouger?");
+
+
+        System.out.println("Tour au joueur "+ currentPlayer.getName());
+    }
     public static List<Position> getCurrentMoves(){
         return currentMoves;
     }
@@ -49,6 +78,10 @@ public class MainGame {
     }
     public static Position getCurrentPos(){
         return currentPos;
+    }
+
+    public static Player getCurrentPlayer(){
+        return currentPlayer;
     }
     public static void setCurrentPos(Position pos){
         currentPos = pos;
