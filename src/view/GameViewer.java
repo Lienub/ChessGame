@@ -227,6 +227,7 @@ public class GameViewer extends JFrame {
                                 MainGame.movePiece(MainGame.getPlateau()[MainGame.getCurrentPos().getX()][MainGame.getCurrentPos().getY()], p);
                                 turn.setText("Tour du joueur " + (MainGame.getCurrentPlayer().getName()));
                                 present = true;
+                                break;
                             }
                         }
                         for (Position c : MainGame.getCurrentCaptures()) {
@@ -237,6 +238,7 @@ public class GameViewer extends JFrame {
                                 MainGame.setCurrentMoves(null);
                                 turn.setText("Tour du joueur " + (MainGame.getCurrentPlayer().getName()));
                                 present = true;
+                                break;
                             }
                         }
                         if(!present && !MainGame.getCurrentPos().equals(new Position(X,Y))){

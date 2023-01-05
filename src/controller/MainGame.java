@@ -2,10 +2,14 @@ package controller;
 
 import model.*;
 import view.*;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainGame {
     public static Piece[][] plateau = new Piece[8][8];
+    public static ArrayList<ChessboardObserver> boardObservers = new ArrayList<>();
     private static List<Position> currentMoves;
     private static List<Position> currentCaptures;
     private static Position currentPos;
@@ -14,9 +18,9 @@ public class MainGame {
     private static  Player player2;
 
     public static GameViewer board_view;
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
-
+        boardObservers.add(new GameplayObserver());
         player1 = new Player("Julien", 0);
         player2 = new Player("Rayane", 1);
         currentPlayer = player1;
@@ -38,28 +42,33 @@ public class MainGame {
     }
 
     public static void movePiece(Piece p, Position pos) {
-        p.move(plateau,pos);
-        if (currentPlayer == player1) {
-            currentPlayer = player2;
+        if(p != null) {
+            p.move(plateau, pos);
+            if (currentPlayer == player1) {
+                currentPlayer = player2;
+            } else {
+                currentPlayer = player1;
+            }
+            notifyObservers(currentPlayer.getColor());
+            System.out.println("J'ai bougé");
+            System.out.println("Tour au joueur " + currentPlayer.getName());
         }
-        else{
-            currentPlayer = player1;
-        }
-        System.out.println("J'ai bougé");
-        System.out.println("Tour au joueur "+ currentPlayer.getName());
     }
 
     public static void capturePiece(Piece p) {
-        if (p.getColor() == 0) {
-            player2.removePiece(plateau,p);
+        if(!p.getClass().getSimpleName().equals("King")){
+            if (p.getColor() == 0) {
+                player2.removePiece(plateau,p);
+            }
+            else{
+                player1.removePiece(plateau,p);
+            }
         }
-        else{
-            player1.removePiece(plateau,p);
+    }
+    public static void notifyObservers(int color) {
+        for (ChessboardObserver o : boardObservers) {
+            o.reactTo(plateau, color);
         }
-        System.out.println("Je vais bouger?");
-
-
-        System.out.println("Tour au joueur "+ currentPlayer.getName());
     }
     public static List<Position> getCurrentMoves(){
         return currentMoves;
@@ -86,4 +95,5 @@ public class MainGame {
     public static void setCurrentPos(Position pos){
         currentPos = pos;
     }
+
 }

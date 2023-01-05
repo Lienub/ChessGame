@@ -47,6 +47,9 @@ public abstract class Piece {
     public Boolean getIsCaptured() {
         return this.isCaptured;
     }
+    public String getState() {
+        return "normal";
+    }
 
     public List<Position> getPossibleMoves() {
         return this.possibleMoves;
@@ -87,10 +90,15 @@ public abstract class Piece {
     public void setMove(Piece[][] plateau) {
         return;
     }
-
+    public void setState(List<Position> captures){
+        return;
+    }
+    public void setInCheckPositions(List<Position> inCheckPositions){
+        return;
+    }
     public void setCapture(Piece[][] plateau) {
         for (Position moves : possibleMoves) {
-            if (plateau[moves.getX()][moves.getY()] != null && !Objects.equals(plateau[moves.getX()][moves.getY()].getColor(), this.getColor())) {
+            if (plateau[moves.getX()][moves.getY()] != null && !Objects.equals(plateau[moves.getX()][moves.getY()].getColor(), this.getColor()) && !plateau[moves.getX()][moves.getY()].getClass().getSimpleName().equals("King")) {
                 possibleCaptures.add(moves);
             }
         }
@@ -99,5 +107,4 @@ public abstract class Piece {
             possibleMoves.remove(moves);
         }
     }
-
 }
