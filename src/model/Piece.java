@@ -107,4 +107,5 @@ public abstract class Piece {
             possibleMoves.remove(moves);
         }
     }
+
 }

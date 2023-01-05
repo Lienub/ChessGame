@@ -29,6 +29,11 @@ public class GameViewer extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        // Placer la fenêtre au centre de l'écran
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        Dimension dim = tk.getScreenSize();
+        this.setLocation(dim.width / 2 - this.getWidth() / 2, dim.height / 2 - this.getHeight() / 2);
+
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         this.add(panel);

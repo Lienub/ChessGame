@@ -14,15 +14,21 @@ public class MainGame {
     private static List<Position> currentCaptures;
     private static Position currentPos;
     private static Player currentPlayer;
-    private static  Player player1;
-    private static  Player player2;
+    private static Player player1;
+    private static Player player2;
 
     public static GameViewer board_view;
     public static void main(String[] args) {
 
-        boardObservers.add(new GameplayObserver());
-        player1 = new Player("Julien", 0);
-        player2 = new Player("Rayane", 1);
+    public static GameMenu menu_view;
+
+    public static void main(String args[]) {
+        menu_view = new GameMenu();
+    }
+
+    public static void startGame(){
+        player1 = new Player(menu_view.getNameP1(), 0);
+        player2 = new Player(menu_view.getNameP2(), 1);
         currentPlayer = player1;
         addPiece(player1.getAllPiece());
         addPiece(player2.getAllPiece());
@@ -95,5 +101,4 @@ public class MainGame {
     public static void setCurrentPos(Position pos){
         currentPos = pos;
     }
-
 }
