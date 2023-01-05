@@ -89,6 +89,7 @@ public class GameMenu extends JFrame {
         start.addActionListener( actionEvent -> {
             player1Name = txtb_player1.getText();
             player2Name = txtb_player2.getText();
+            this.dispose();
             MainGame.startGame();
         });
 
