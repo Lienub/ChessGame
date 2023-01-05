@@ -11,6 +11,7 @@ public abstract class Piece {
     protected Boolean isCaptured;
     protected List<Position> possibleMoves;
     protected List<Position> possibleCaptures;
+    protected String state;
 
     public Piece(Integer color, Position position) {
         this.color = color;
@@ -100,4 +101,7 @@ public abstract class Piece {
         }
     }
 
+    public String getState() {
+        return this.state;
+    }
 }

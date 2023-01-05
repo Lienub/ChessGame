@@ -17,4 +17,4 @@ public class GameplayObserver implements ChessboardObserver {
         MainGame.board_view.update(MainGame.plateau);
     }
 }
-}
+
