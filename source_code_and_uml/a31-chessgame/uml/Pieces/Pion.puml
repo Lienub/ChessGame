@@ -1,9 +1,0 @@
-@startuml
-skinparam classBorderColor #4F4F4F
-skinparam classBackgroundColor #FFFFFD
-
-class Pion extends Piece{
-
-}
-
-@enduml

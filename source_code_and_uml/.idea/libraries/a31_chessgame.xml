@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="a31-chessgame">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/a31-chessgame/out/artifacts/a31_chessgame_jar/a31-chessgame.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
