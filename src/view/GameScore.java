@@ -1,14 +1,10 @@
 package view;
 
-import controller.MainGame;
 import model.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import net.miginfocom.swing.*;
+
 
 public class GameScore extends JFrame {
     public GameScore(Player winner){

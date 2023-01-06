@@ -1,7 +1,6 @@
-package view;
+package controller;
 
 import model.*;
-import controller.*;
 
 public class GraphicalObserver implements PieceObserver {
     @Override

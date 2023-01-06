@@ -14,8 +14,9 @@ public class MainGame {
     private static List<Position> currentCaptures;
     private static Position currentPos;
     private static Player currentPlayer;
-    private static Player player1;
-    private static Player player2;
+    public static Player player1;
+    public static Player player2;
+
     public static GameViewer board_view;
     public static GameMenu menu_view;
     public static GameScore score_view;
@@ -32,9 +33,15 @@ public class MainGame {
         addPiece(player2.getAllPiece());
         for(Piece p : player1.getAllPiece()){
             p.addObserver(new GraphicalObserver());
+            if (p.getClass().getSimpleName().equals("Pawn")) {
+                p.addObserver(new PromoteObserver());
+            }
         }
         for(Piece p : player2.getAllPiece()){
             p.addObserver(new GraphicalObserver());
+            if (p.getClass().getSimpleName().equals("Pawn")) {
+                p.addObserver(new PromoteObserver());
+            }
         }
         board_view = new GameViewer();
         board_view.displayPieces(plateau);

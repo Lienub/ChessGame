@@ -17,9 +17,9 @@ public class GameViewer extends JFrame {
     private JLabel[][] displayMoves = new JLabel[8][8];
     private JLabel[][] displayCaptures = new JLabel[8][8];
     private JLabel turn = new JLabel("Tour du joueur "+ (MainGame.getCurrentPlayer().getName()), SwingConstants.CENTER);
-    JPanel J1Capture = new JPanel(new GridLayout(5,2));
+    JPanel J1Capture = new JPanel(new GridLayout(8,2));
     int J1CaptureCount = 0;
-    JPanel J2Capture = new JPanel(new GridLayout(5,2));
+    JPanel J2Capture = new JPanel(new GridLayout(8,2));
     int J2CaptureCount = 0;
     private static final String COLS = "ABCDEFGH";
 
@@ -183,11 +183,34 @@ public class GameViewer extends JFrame {
             try {
                 l.setIcon(new ImageIcon(ImageIO
                         .read(Objects.requireNonNull(getClass().getResource("/pieces/" + color + p.getClass().getSimpleName() + ".png")))
-                ))
-                ;
+                ));
             } catch (Exception e) {
                 System.out.println(e + "\nGiven path : /pieces/" + color + p.getClass().getSimpleName()+".png");
             }
+        }
+    }
+    public void changeCapture(Piece p, int index){
+        Component c = null;
+        if(p.getColor() == 0) {
+            c = J1Capture.getComponent(index);
+        }
+        else {
+            c = J2Capture.getComponent(index);
+        }
+        System.out.println(c);
+        if(c instanceof JLabel){
+            JLabel l = (JLabel) c;
+            String color;
+            if (p.getColor() == 0) color = "w_";
+            else color = "b_";
+            try {
+                l.setIcon(new ImageIcon(ImageIO
+                        .read(Objects.requireNonNull(getClass().getResource("/pieces/" + color + p.getClass().getSimpleName() + ".png")))
+                ));
+            } catch (Exception e) {
+                System.out.println(e + "\nGiven path : /pieces/" + color + p.getClass().getSimpleName()+".png");
+            }
+            System.out.println(c);
         }
     }
     public void setActions(){

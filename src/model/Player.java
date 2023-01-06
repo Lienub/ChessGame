@@ -49,7 +49,6 @@ public class Player {
     }
 
     public void removePiece(Piece[][] plateau, Piece p){
-        System.out.println("Capture!");
         this.deadPiece.add(p);
         p.setIsCaptured(plateau,true);
     }

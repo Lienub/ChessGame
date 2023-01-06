@@ -11,7 +11,7 @@ public abstract class Piece {
     protected Boolean isCaptured;
     protected List<Position> possibleMoves;
     protected List<Position> possibleCaptures;
-
+    /*Constructor*/
     public Piece(Integer color, Position position) {
         this.color = color;
         this.position = position;
@@ -19,16 +19,14 @@ public abstract class Piece {
         this.possibleMoves = new ArrayList<>();
         this.possibleCaptures = new ArrayList<>();
     }
-
+    /*Observers methods*/
     public void addObserver(PieceObserver observer){
         Observers.add(observer);
         System.out.println("observer added.");
     }
-
     public void removeObserver(PieceObserver observer){
         Observers.remove(observer);
     }
-
     public void notifyObservers(){
         System.out.println("notified?");
         for (PieceObserver observer : Observers) {
@@ -36,29 +34,23 @@ public abstract class Piece {
             observer.reactTo(this);
         }
     }
+    /*Getters*/
     public Integer getColor() {
         return this.color;
     }
-
     public Position getPosition() {
         return this.position;
     }
-
     public Boolean getIsCaptured() {
         return this.isCaptured;
     }
-    public String getState() {
-        return "normal";
-    }
-
     public List<Position> getPossibleMoves() {
         return this.possibleMoves;
     }
-
     public List<Position> getPossibleCaptures() {
         return this.possibleCaptures;
     }
-
+    /*Setters*/
     public Boolean move(Piece[][] plateau, Position coord)
     {
         if(this.possibleMoves.contains(coord) || this.possibleCaptures.contains(coord)){
@@ -71,11 +63,9 @@ public abstract class Piece {
         }
         return false;
     }
-
     public void setColor(Integer color) {
         this.color = color;
     }
-
     public void setPosition(Position position) {
         this.position = position;
     }
@@ -86,14 +76,7 @@ public abstract class Piece {
         plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
         notifyObservers();
     }
-
     public void setMove(Piece[][] plateau) {
-        return;
-    }
-    public void setState(List<Position> captures){
-        return;
-    }
-    public void setInCheckPositions(List<Position> inCheckPositions){
         return;
     }
     public void setCapture(Piece[][] plateau) {

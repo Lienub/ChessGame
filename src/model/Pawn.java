@@ -3,23 +3,12 @@ package model;
 import java.util.Objects;
 
 public class Pawn extends Piece {
-    private Boolean isPromoted;
-    private Boolean isPromotable;
+    private Boolean isPromotable = false;
     private Boolean firstMove;
 
     public Pawn(Integer color, Position position) {
         super(color, position);
-        setIsPromoted(false);
-        setIsPromotable(false);
         firstMove = true;
-    }
-
-    public Boolean getIsPromoted() {
-        return this.isPromoted;
-    }
-
-    public Boolean getIsPromotable() {
-        return this.isPromotable;
     }
 
     @Override
@@ -35,12 +24,29 @@ public class Pawn extends Piece {
         }
         return false;
     }
-    public void setIsPromoted(Boolean isPromoted) {
-        this.isPromoted = isPromoted;
+
+    public Boolean getIsPromotable() {
+        return this.isPromotable;
     }
 
-    public void setIsPromotable(Boolean isPromotable) {
-        this.isPromotable = isPromotable;
+    public void setIsPromotable() {
+        int row;
+        if(this.getColor() == 0){
+            row = 0;
+        } else {
+            row = 7;
+        }
+        System.out.println(this.position.getX() + " : " +  this.position.getY());
+        for (int i = 0 ; i < 8 ; i++){
+            System.out.println(i + " : " + row);
+            if(this.position.equals(new Position(i, row))){
+                this.isPromotable = true;
+                break;
+            }
+            else{
+                this.isPromotable = false;
+            }
+        }
     }
     @Override
     public void setMove(Piece[][] plateau) {

@@ -10,21 +10,23 @@ public class Position {
         }
     }
 
-    public void setPos(int x, int y)
-    {
-        xPos = x;
-        yPos = y;
-    }
-
     public boolean equals(Position p)
     {
         return xPos == p.getX() && yPos == p.getY();
     }
 
     public int getX()
-    {	return xPos;	}
-
-    public int  getY()
-    {	return yPos;	}
-
+    {
+        return xPos;
     }
+    public int  getY()
+    {
+        return yPos;
+    }
+
+    public void setPos(int x, int y)
+    {
+        xPos = x;
+        yPos = y;
+    }
+}

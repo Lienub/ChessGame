@@ -10,11 +10,10 @@ public class King extends Piece {
         super(color, position);
     }
 
-@Override
     public String getState() {
         return this.state;
     }
-@Override
+
     public void setState(List<Position> captures) {
         //checking if the king is in check
         for (Position capture : captures) {

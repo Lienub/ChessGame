@@ -6,22 +6,29 @@ package model #8df2a8{
     abstract class Piece {
         - Integer color
         # Boolean isCapturable
-        # List<Position> possibleMoves
+        /' Mettre sur flèche : # List<Position> possibleMoves'/
 
         + Piece(color : Integer, position : Position)
+
+        + addObserver(observer : PieceObserver) : void
+        + removeObserver(observer : PieceObserver) : void
+        + notifyObservers() : void
 
         + getColor() : Integer
         + getPosition() : Position
         + getIsCaptured() : Boolean
+        + getState() : String
         + getPossibleMoves() : List<Position>
+        + getPossibleCaptures() : List<Position>
 
         + move(coord : Position) : Boolean
 
-        + setMove(plateau : Piece[][]) : void
         + setColor(color : Integer) : void
         + setPosition(position : Position) : void
         + setIsCaptured(isCaptured : Boolean) : void
-
+        + setMove(plateau : Piece[][]) : void
+        + setState(captures : List<Position>) : void
+        + setCapture(plateau : Piece[][]) : void
     }
 
     class Position{
@@ -29,61 +36,76 @@ package model #8df2a8{
         - yPos : int
 
         + Position(x : int, y : int)
-        + setPos(x : int, y : int) : void
+
         + equals(p : Position) : Boolean
+
         + getX() : Integer
         + getY() : Integer
+
+        + setPos(x : int, y : int) : void
     }
 
     class Queen{
         + Queen(color : Integer, position : Position)
 
         + setMove(plateau : Piece[][], coord : Position) : void
+
+        - addMove(plateau : Piece[][], j : int, i : int) : Boolean
     }
 
     class Rook{
         + Rook(color : Integer, position : Position)
 
-        + setMove(plateau : Piece[][], coord : Position) : void
+        + setMove(plateau : Piece[][]) : void
+
+        - addMove(plateau : Piece[][], j : int, i : int) : Boolean
     }
 
     class Pawn{
-        - Boolean isPromoted
         - Boolean isPromotable
         - Boolean firstMove
 
         + Pawn(color : Integer, position : Position)
 
-        + getIsPromoted() : Boolean
+        + move()(plateau : Piece[][], coord Position) : Boolean
+
         + getIsPromotable() : Boolean
 
-        + setMove(plateau : Piece[][], coord : Position) : void
-        + setIsPromoted(isPromoted : Boolean) : void
         + setIsPromotable( isPromotable : Boolean) : void
+        + setMove(plateau : Piece[][]) : void
     }
 
     class King{
-        - Boolean isUndefendable
+        - String state
 
         + King(color : Integer, position : Position)
 
-        + setMove(plateau : Piece[][], coord : Position) : void
+        + getState() : String
 
-        + getIsUndefendable() : Boolean
-        + setIsUndefendable(isUndefendable : Boolean) : void
+        + setState(captures : List<Position>) : void
+        + setMove(plateau : Piece[][]) : void
     }
 
     class Bishop{
         + Bishop(color : Integer, position : Position)
 
         + setMove(plateau : Piece[][]) : void
-        + addMove(plateau : Piece[][], j : Integer, i : Integer) : Boolean
+
+        + addMove(plateau : Piece[][], j : int, i : int) : Boolean
     }
 
     class Knight{
         + Knight(color : Integer, position : Position)
 
-        + setMove(plateau : Piece[][], coord : Position) : void
+        + setMove(plateau : Piece[][]) : void
+    }
+
+    interface PieceObserver{
+        reactTo(Piece p) : void
+    }
+
+    interface ChessBoardObserver{
+        reactTo(plateau Piece[][]) : void
     }
 }
 /'=================================

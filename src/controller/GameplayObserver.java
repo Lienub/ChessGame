@@ -17,8 +17,8 @@ public class GameplayObserver implements ChessboardObserver {
         for (Piece[] pieces : plateau) {
             for (Piece piece : pieces) {
                 if (piece != null && piece.getClass().getSimpleName().equals("King")) {
-                    piece.setState(listCaptures());
-                    if (Objects.equals(piece.getState(), "check")) {
+                    ((King) piece).setState(listCaptures());
+                    if (Objects.equals(((King) piece).getState(), "check")) {
                         System.out.println("Check!");
                         piece.setMove(plateau);
                         if (piece.getPossibleMoves().isEmpty()) {
