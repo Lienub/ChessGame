@@ -23,6 +23,7 @@ public class GameplayObserver implements ChessboardObserver {
                         piece.setMove(plateau);
                         if (piece.getPossibleMoves().isEmpty()) {
                             System.out.println("Checkmate!");
+                            MainGame.endGame(color);
                         }
                     }
                 }

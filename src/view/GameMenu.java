@@ -30,13 +30,8 @@ public class GameMenu extends JFrame {
         contentPane.setLayout(new BorderLayout());
 
         // Créer un panneau pour le titre
-        JPanel titlePanel = new JPanel();
-        titlePanel.setLayout( new BoxLayout(titlePanel, BoxLayout.Y_AXIS) );
-
         JLabel title = new JLabel("Jeu d'échecs", JLabel.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 30));
-
-        titlePanel.add(title);
 
         /*// Créer un panneau pour la présentation du jeu
         JPanel presPanel = new JPanel();
@@ -51,7 +46,8 @@ public class GameMenu extends JFrame {
 
         //titlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        contentPane.add(titlePanel, BorderLayout.NORTH);
+        contentPane.add(title, BorderLayout.NORTH);
+        //contentPane.add(titlePanel, BorderLayout.NORTH);
         //contentPane.add(presPanel, BorderLayout.NORTH);
 
         // Créer un panneau pour les noms des joueurs
@@ -102,4 +98,28 @@ public class GameMenu extends JFrame {
     public String getNameP1(){ return player1Name; }
 
     public String getNameP2(){ return player2Name; }
+
+    private void initComponents() {
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner Evaluation license - Rayane
+        label1 = new JLabel();
+
+        //======== this ========
+        var contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+
+        //---- label1 ----
+        label1.setText("                    Jeu d'\u00e9checs");
+        label1.setForeground(Color.black);
+        label1.setFont(label1.getFont().deriveFont(Font.BOLD, label1.getFont().getSize() + 10f));
+        contentPane.add(label1, BorderLayout.NORTH);
+        pack();
+        setLocationRelativeTo(getOwner());
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    // Generated using JFormDesigner Evaluation license - Rayane
+    private JLabel label1;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

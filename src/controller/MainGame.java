@@ -16,9 +16,9 @@ public class MainGame {
     private static Player currentPlayer;
     private static Player player1;
     private static Player player2;
-
     public static GameViewer board_view;
     public static GameMenu menu_view;
+    public static GameScore score_view;
 
     public static void main(String[] args) {
         menu_view = new GameMenu();
@@ -38,6 +38,15 @@ public class MainGame {
         }
         board_view = new GameViewer();
         board_view.displayPieces(plateau);
+    }
+
+    public static void endGame(int color_loser){
+        board_view.dispose();
+        if(color_loser == 0){
+            score_view = new GameScore(player2);
+        } else {
+            score_view = new GameScore(player1);
+        }
     }
     public static void addPiece(List<Piece> pieces) {
         for (Piece p : pieces) {
