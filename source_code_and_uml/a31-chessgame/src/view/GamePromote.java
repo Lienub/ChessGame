@@ -15,8 +15,6 @@ public class GamePromote extends JFrame {
     private final Piece p;
     private final List<Piece> deadPieces;
 
-    private Player currentPlayer;
-
     //create new frame with list of all caputred pieces and a button to promote to selected piece type
     public GamePromote(Piece piece) {
         super("Promote");

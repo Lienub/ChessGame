@@ -3,9 +3,14 @@
   ===          MODEL            ===
   ================================='/
 package model #8df2a8{
+
     abstract class Piece {
-        - Integer color
-        # Boolean isCapturable
+        # Observers : ArrayList<PieceObserver>
+        - color : Integer
+        # position : Boolean
+        # isCapturable : Boolean
+        # possibleMoves : List<Position>
+        # possibleCaptures : List<Position>
         /' Mettre sur flèche : # List<Position> possibleMoves'/
 
         + Piece(color : Integer, position : Position)
@@ -17,7 +22,6 @@ package model #8df2a8{
         + getColor() : Integer
         + getPosition() : Position
         + getIsCaptured() : Boolean
-        + getState() : String
         + getPossibleMoves() : List<Position>
         + getPossibleCaptures() : List<Position>
 
@@ -27,9 +31,25 @@ package model #8df2a8{
         + setPosition(position : Position) : void
         + setIsCaptured(isCaptured : Boolean) : void
         + setMove(plateau : Piece[][]) : void
-        + setState(captures : List<Position>) : void
         + setCapture(plateau : Piece[][]) : void
     }
+
+     class Player {
+        - playerName : String
+        - playerColor : Integer
+        - listPiece : List<Piece>
+        - deadPiece : List<Piece>
+
+        + Joueur(playerName : String, playerColor : Integer)
+
+        + getName() : String
+        + getColor() : Integer
+        + getAllPiece() : List<Piece>
+        + getDeadPiece() : List<Piece>
+
+        + initPiece() : void
+        + removePiece(coord : Position)
+     }
 
     class Position{
         - xPos : int
@@ -41,8 +61,6 @@ package model #8df2a8{
 
         + getX() : Integer
         + getY() : Integer
-
-        + setPos(x : int, y : int) : void
     }
 
     class Queen{
@@ -62,8 +80,8 @@ package model #8df2a8{
     }
 
     class Pawn{
-        - Boolean isPromotable
-        - Boolean firstMove
+        - isPromotable : Boolean
+        - firstMove : Boolean
 
         + Pawn(color : Integer, position : Position)
 
@@ -76,7 +94,7 @@ package model #8df2a8{
     }
 
     class King{
-        - String state
+        - state : String
 
         + King(color : Integer, position : Position)
 
@@ -101,11 +119,11 @@ package model #8df2a8{
     }
 
     interface PieceObserver{
-        reactTo(Piece p) : void
+        reactTo(p : Piece) : void
     }
 
     interface ChessBoardObserver{
-        reactTo(plateau Piece[][]) : void
+        reactTo(plateau : Piece[][]) : void
     }
 }
 /'=================================
@@ -113,9 +131,19 @@ package model #8df2a8{
   ================================='/
 package controller #f28d97{
     class MainGame{
-        - {static} Piece[][] plateau
-        - {static} List<Position> currentMoves
-        - {static} GameViewer board_view
+        + {static} plateau : Piece[][]
+        + {static} boardObserver : ArrayList<ChessBoardObserver>
+        - {static} currentMoves : List<Position>
+        - {static} currentCaptures : List<Position>
+        - {static} currentPos : Position
+
+        - {static} currentPlayer : Player
+        + {static} player1 : Player
+        + {static} player2 : Player
+
+        + {static} board_view : GameViewer
+        + {static} menu_view : MenuViewer
+        + {static} score_view : ScoreViewer
 
         + {static} main(String args[]) : void
 
@@ -130,22 +158,21 @@ package controller #f28d97{
 
     }
 
-    class Player {
-            - playerName : String
-            - playerColor : Integer
-            - listPiece : List<Piece>
-            - deadPiece : List<Piece>
+    class GameplayObserver{
+        - {static} plateau : Piece[][]
+        - {static} color : int
 
-            + Joueur(playerName : String, playerColor : Integer)
+        + reactTo(p : Piece[][], c : int) : void
+        - listCaptures() : List<Position>
+    }
 
-            + getName() : String
-            + getColor() : Integer
-            + getAllPiece() : List<Piece>
-            + getDeadPiece() : List<Piece>
+    class GraphicalObserver{
+        + reactTo(p : Piece) : void
+    }
 
-            + initPiece() : void
-            + removePiece(coord : Position)
-        }
+    class PromoteObserver{
+        + reactTo(p : Piece) : void
+    }
 }
 /'=================================
   ===           VIEW            ===
@@ -154,24 +181,64 @@ package view #f2d48d{
 
 
     class GameViewer {
-        - JButton[][] squares
-        - JLabel[][] displayMoves
-        - {static} String COLS
+        - squares : JButton[][]
+        - displayMoves : JLabel[][]
+        - displayCaptures : JLabel[][]
+        - turn : JLabel
+        + J1Capture : JLabel
+        + J1CaptureCount : int
+        + J2Capture : JLabel
+        + J2CaptureCount : int
+
+        + miscInfos : JPanel
+        + checkJ1 : JLabel
+        + checkJ2 : JLabel
+        - {static} COLS : String
 
         + GameViewer()
 
-        + displayPieces(plateau : Piece[][]) : void
         + resetDisplayPiece(plateau : Piece[][]) : void
+        + displayPieces(plateau : Piece[][]) : void
         + resetDisplayMoves( displayMoves : JLabel[][]) : void
 
         + update() : void
+        + addCapture(p : Piece) : void
+        + changeCapture(p : Piece, index : int) : void
         + setActions() : void
+        + displayCheck(player : Player, state : String) : void
+        + resetCheck(player : Player) : void
 
     }
+
+    class GameMenu {
+        - player1Name : String
+        - player2Name : String
+
+        + GameMenu()
+
+        + getNameP1() : String
+        + getNameP2() : String
+    }
+
+    class GameScore {
+        + GameScore()
+    }
+
+    class GamePromote {
+        - p : Piece
+        - deadPieces : List<Piece>
+
+        + GamePromote(piece : Piece)
+        + initButtons() : void
+        - operateChanges(name : String) : void
+    }
 }
+
+
 /'=================================
   ===          LINKS            ===
   ================================='/
+
 
 Position -d- Piece : use "# position : Position" <
 Position -u-  MainGame : use "- currentPos : Position" <
@@ -180,17 +247,28 @@ Position -  Piece : use "# position : Position" <
 Position -  MainGame : use "- currentPos : Position" <
 Piece - MainGame : use "- plateau : Piece[][]" <
 
-MainGame -d- Player : use >
+MainGame o-d- Player : use >
 controller - Piece : manipulate >
 GameViewer -- Piece : check >
 GameViewer - MainGame : transmit data  >
 
-Knight --* Piece
-Piece *-- Pawn
-Piece *-- Bishop
-Piece *-- Rook
-King --* Piece
-Piece *-u- Queen
+Piece <|-- Knight
+Piece <|-- Bishop
+Piece <|-- Rook
+Piece <|-u- Pawn
+Piece <|-u- King
+Piece <|-u- Queen
 
+PieceObserver <|-u- PromoteObserver
+PromoteObserver o-- GamePromote
+PieceObserver <|-u- GraphicalObserver
+GraphicalObserver --o MainGame
+
+MainGame o-- GameViewer
+MainGame o-- GameMenu
+MainGame o-- GameScore
+
+GameScore o-- GameMenu
+GameplayObserver --o MainGame
 
 @enduml
