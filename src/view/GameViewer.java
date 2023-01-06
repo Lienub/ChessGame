@@ -41,13 +41,13 @@ public class GameViewer extends JFrame {
 
         JPanel chessBoard = new JPanel(new GridLayout(9, 9));
         J1Capture.setPreferredSize(new Dimension(200, 1000));
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 16; i++){
             JLabel label = new JLabel();
             label.setPreferredSize(new Dimension(60,60));
             J1Capture.add(label);
         }
         J2Capture.setPreferredSize(new Dimension(200, 1000));
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 16; i++){
             JLabel label = new JLabel();
             label.setPreferredSize(new Dimension(60,60));
             J2Capture.add(label);
@@ -89,7 +89,6 @@ public class GameViewer extends JFrame {
 
                 squares[i][j].add(displayMoves[i][j], SwingConstants.CENTER);
                 squares[i][j].add(displayCaptures[i][j], SwingConstants.CENTER);
-                System.out.println("Case ligne " + i + " et colonne " + j);
             }
         }
 
@@ -166,6 +165,8 @@ public class GameViewer extends JFrame {
     }
 
     public void addCapture(Piece p){
+        System.out.println("J1Capture : " + J1Capture.getComponentCount());
+        System.out.println("J2Capture : " + J2Capture.getComponentCount());
         Component c = null;
         if(p.getColor() == 0) {
             c = J1Capture.getComponent(J1CaptureCount);
@@ -228,6 +229,9 @@ public class GameViewer extends JFrame {
                         MainGame.setCurrentMoves(MainGame.getPlateau()[X][Y].getPossibleMoves());
                         MainGame.setCurrentCaptures(MainGame.getPlateau()[X][Y].getPossibleCaptures());
                         for (Position p : MainGame.getCurrentMoves()) {
+                            if(MainGame.getPlateau()[p.getX()][p.getY()] != null &&MainGame.getPlateau()[p.getX()][p.getY()].getClass().getSimpleName().equals("King")) {
+                                break;
+                            }
                             System.out.println("Possible moves : " + p.getX() + " " + p.getY());
                             try {
                                 displayMoves[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/pieces/circle.png")))));
@@ -238,6 +242,9 @@ public class GameViewer extends JFrame {
                         }
 
                         for(Position p : MainGame.getCurrentCaptures()){
+                            if(MainGame.getPlateau()[p.getX()][p.getY()] != null &&MainGame.getPlateau()[p.getX()][p.getY()].getClass().getSimpleName().equals("King")) {
+                                break;
+                            }
                             System.out.println("Possible captures : " + p.getX() + " " + p.getY());
                             try {
                                 displayCaptures[p.getX()][p.getY()].setIcon(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/pieces/circle2.png")))));
@@ -250,7 +257,10 @@ public class GameViewer extends JFrame {
                     if(MainGame.getCurrentPos() != null) {
                         boolean present = false;
                         for (Position p : MainGame.getCurrentMoves()) {
-                            if (p.equals(new Position(X, Y))) {
+                            if(MainGame.getPlateau()[p.getX()][p.getY()] != null &&MainGame.getPlateau()[p.getX()][p.getY()].getClass().getSimpleName().equals("King")) {
+                                break;
+                            }
+                            else if (p.equals(new Position(X, Y))) {
                                 System.out.println("ok");
                                 MainGame.movePiece(MainGame.getPlateau()[MainGame.getCurrentPos().getX()][MainGame.getCurrentPos().getY()], p);
                                 turn.setText("Tour du joueur " + (MainGame.getCurrentPlayer().getName()));
@@ -259,7 +269,10 @@ public class GameViewer extends JFrame {
                             }
                         }
                         for (Position c : MainGame.getCurrentCaptures()) {
-                            if (c.equals(new Position(X, Y))) {
+                            if(MainGame.getPlateau()[c.getX()][c.getY()] != null &&MainGame.getPlateau()[c.getX()][c.getY()].getClass().getSimpleName().equals("King")) {
+                                break;
+                            }
+                            else if(c.equals(new Position(X, Y))) {
                                 MainGame.capturePiece(MainGame.getPlateau()[X][Y]);
                                 MainGame.movePiece(MainGame.getPlateau()[MainGame.getCurrentPos().getX()][MainGame.getCurrentPos().getY()], c);
                                 MainGame.setCurrentPos(null);

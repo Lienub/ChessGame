@@ -44,14 +44,14 @@ public class Queen extends  Piece{
     }
 
     private boolean addMove(Piece[][] plateau, int j, int i) {
-        if (plateau[i][j] == null) {
-            possibleMoves.add(new Position(i, j));
-            return false;
-        } else if (!Objects.equals(plateau[i][j].getColor(), this.getColor())) {
-            possibleMoves.add(new Position(i, j));
+        if (plateau[i][j] != null) {
+            if (!Objects.equals(plateau[i][j].getColor(), this.getColor())) {
+                possibleMoves.add(new Position(i, j));
+            }
             return true;
         } else {
-            return true;
+            possibleMoves.add(new Position(i, j));
+            return false;
         }
     }
 }

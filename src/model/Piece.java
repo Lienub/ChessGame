@@ -22,15 +22,12 @@ public abstract class Piece {
     /*Observers methods*/
     public void addObserver(PieceObserver observer){
         Observers.add(observer);
-        System.out.println("observer added.");
     }
     public void removeObserver(PieceObserver observer){
         Observers.remove(observer);
     }
     public void notifyObservers(){
-        System.out.println("notified?");
         for (PieceObserver observer : Observers) {
-            System.out.println("notified.");
             observer.reactTo(this);
         }
     }
@@ -58,7 +55,6 @@ public abstract class Piece {
             setPosition(coord);
             plateau[coord.getX()][coord.getY()] = this;
             notifyObservers();
-            System.out.println("c'est bougé");
             return true;
         }
         return false;
@@ -71,8 +67,6 @@ public abstract class Piece {
     }
     public void setIsCaptured(Piece[][] plateau, Boolean isCaptured) {
         this.isCaptured = isCaptured;
-        System.out.println("isCaptured = " + isCaptured);
-        System.out.println("captured");
         plateau[this.getPosition().getX()][this.getPosition().getY()] = null;
         notifyObservers();
     }
@@ -81,11 +75,10 @@ public abstract class Piece {
     }
     public void setCapture(Piece[][] plateau) {
         for (Position moves : possibleMoves) {
-            if (plateau[moves.getX()][moves.getY()] != null && !Objects.equals(plateau[moves.getX()][moves.getY()].getColor(), this.getColor()) && !plateau[moves.getX()][moves.getY()].getClass().getSimpleName().equals("King")) {
+            if (plateau[moves.getX()][moves.getY()] != null && !Objects.equals(plateau[moves.getX()][moves.getY()].getColor(), this.getColor())) {
                 possibleCaptures.add(moves);
             }
         }
-
         for (Position moves : possibleCaptures){
             possibleMoves.remove(moves);
         }

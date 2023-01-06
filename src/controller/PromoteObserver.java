@@ -8,7 +8,7 @@ public class PromoteObserver implements PieceObserver {
     public void reactTo(Piece p) {
         ((Pawn) p).setIsPromotable();
 
-        if (((Pawn) p).getIsPromotable()) {
+        if (((Pawn) p).getIsPromotable() && !p.getIsCaptured()) {
             MainGame.board_view.setEnabled(false);
             new GamePromote(p);
         }

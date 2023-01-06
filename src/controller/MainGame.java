@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainGame {
-    public static Piece[][] plateau = new Piece[8][8];
+    public static Piece[][] plateau;
     public static ArrayList<ChessboardObserver> boardObservers = new ArrayList<>();
     private static List<Position> currentMoves;
     private static List<Position> currentCaptures;
@@ -26,11 +26,13 @@ public class MainGame {
     }
 
     public static void startGame(){
+        plateau = new Piece[8][8];
         player1 = new Player(menu_view.getNameP1(), 0);
         player2 = new Player(menu_view.getNameP2(), 1);
         currentPlayer = player1;
         addPiece(player1.getAllPiece());
         addPiece(player2.getAllPiece());
+        boardObservers.add(new GameplayObserver());
         for(Piece p : player1.getAllPiece()){
             p.addObserver(new GraphicalObserver());
             if (p.getClass().getSimpleName().equals("Pawn")) {
@@ -70,8 +72,6 @@ public class MainGame {
                 currentPlayer = player1;
             }
             notifyObservers(currentPlayer.getColor());
-            System.out.println("J'ai bougé");
-            System.out.println("Tour au joueur " + currentPlayer.getName());
         }
     }
 

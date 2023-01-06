@@ -15,18 +15,19 @@ public class King extends Piece {
     }
 
     public void setState(List<Position> captures) {
-        //checking if the king is in check
+        System.out.println(captures);
         for (Position capture : captures) {
             if (capture.equals(this.position)) {
                 this.state = "check";
+                return;
             }
         }
+        this.state = "normal";
     }
     @Override
     public void setMove(Piece[][] plateau){
         possibleMoves.clear();
         possibleCaptures.clear();
-        System.out.println(this.getClass().getSimpleName());
         int pX = this.getPosition().getX(), pY = this.getPosition().getY();
 
         if(pX+1 < plateau.length)
